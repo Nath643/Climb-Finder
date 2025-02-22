@@ -4,13 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Climb Finder</title>
+
+    <link rel="stylesheet" href="styles/recommended-climbs.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;700;800;900&display=swap" rel="stylesheet">
   </head>
 
   <body>
     <header>
       <nav>
         <!-- refer to the more css folder - drop down menu for creating this (you can get the hamburder menu pic from yt project)-->
-         <img src="" alt="">
+        <button class="hamburger-menu-button">
+          <img src="icons/hamburger-menu-icon.png" alt="hamburder menu icon" class="hamburger-menu-icon">
+        </button>
+
+        <!-- <div class="pages">
+          <a href="">Completed Climbs</a>
+          <a href="">Planned Climbs</a>
+          <a href="">Your Profile</a>
+        </div> -->
       </nav>
 
       <div class="logo">
@@ -19,17 +33,79 @@
 
       <div class="country">
         <!-- refer to the more css folder - drop down menu for creating this -->
-        <p></p>
+        <button class="country-button">
+          <p>UK</p>
+        </button>
+
+        <!-- <div class="countries">
+          <a href="">Australia</a>
+          <a href="">Canada</a>
+          <a href="">Norway</a>
+          <a href="">Sweden</a>
+          <a href="">USA</a>
+        </div> -->
       </div>
     </header>
 
     <main>
       <section class="page-title">
-
+        <h2>Recommended Climbs</h2>
       </section>
 
       <section class="recommended-mountains-grid">
+        <div class="recommended-mountain-section">
+          <div class="mountain-image-container">
+            <img src="mountain-images/helvellyn.png" alt="photo of Helvellyn mountain, Cumbria, UK." class="mountain-image">
+          </div>
 
+          <div class="map">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d9261.512034460757!2d-3.0275461196981057!3d54.52683001487671!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x487cc27e37923d2d%3A0x103c674a227ad7fe!2sHelvellyn!5e0!3m2!1sen!2sje!4v1740168779790!5m2!1sen!2sje" width="600" height="450" style="border: solid 1px rgb(113, 113, 113);" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </div>
+
+          <div class="mountain-info">
+            <div class="mountain-name">
+              <h3>Helvellyn</h3>
+            </div>
+
+            <div class="mountain-description">
+              <p>Height: 978m</p>
+              <p>Difficulty: medium</p>
+              <!-- <p>Views: a good view of most of the beautiful Lake District, from the centre of the Lake District.</p> - this should probably be on the actual mountain page -->
+              <p>Total distance of the climb: 7 miles</p>
+            </div>
+          </div>
+
+          <div>
+            <button>Click here for more info about this mountain</button>
+          </div>
+        </div>
+
+        <div class="recommended-mountain-section">
+          <div class="mountain-image-container">
+            <img src="mountain-images/helvellyn.png" alt="photo of Helvellyn mountain, Cumbria, UK." class="mountain-image">
+          </div>
+
+          <div class="map">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d9261.512034460757!2d-3.0275461196981057!3d54.52683001487671!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x487cc27e37923d2d%3A0x103c674a227ad7fe!2sHelvellyn!5e0!3m2!1sen!2sje!4v1740168779790!5m2!1sen!2sje" width="600" height="450" style="border: solid 1px rgb(113, 113, 113);" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </div>
+
+          <div class="mountain-info">
+            <div class="mountain-name">
+              <h3>Helvellyn</h3>
+            </div>
+
+            <div class="mountain-description">
+              <p>Height: 978m</p>
+              <p>Difficulty: medium</p>
+              <!-- <p>Views: a good view of most of the beautiful Lake District, from the centre of the Lake District.</p> - this should probably be on the actual mountain page -->
+              <p>Total distance of the climb: 7 miles</p>
+            </div>
+          </div>
+
+          <div>
+            <button>Click here for more info about this mountain</button>
+          </div>
+        </div>
       </section>
     </main>
   </body>

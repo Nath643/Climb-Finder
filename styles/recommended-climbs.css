@@ -1,0 +1,96 @@
+body {
+  padding: 0;
+  margin: 0;
+  font-family: Verdana, arial;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: solid 1px rgb(170, 170, 170);
+  background-color: rgb(227, 255, 227);
+  font-family: "Kanit", serif;
+  font-weight: 800;
+  font-style: normal;
+}
+
+header .logo h1 {
+  color: rgb(0, 98, 0);
+}
+
+.hamburger-menu-button {
+  width: 50px;
+  height: 50px;
+  margin-left: 50px;
+  background-color: rgb(227, 255, 227);
+  border: none;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.hamburger-menu-button:hover {
+  opacity: 0.7;
+}
+
+.hamburger-menu-icon {
+  width: 30px;
+}
+
+.country-button {
+  width: 50px;
+  height: 50px;
+  margin-right: 50px;
+  background-color: rgb(227, 255, 227);
+  border: solid 2px black;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  position: relative;
+  transition: 0.2s;
+}
+
+.country-button p {
+  font-size: 18px;
+  position: absolute;
+  top: -5px;
+  left: 9px;
+}
+
+.country-button:hover {
+  opacity: 0.7;
+}
+
+
+.page-title {
+  text-align: center;
+  margin-bottom: 5px;
+  margin-top: 40px;
+}
+
+
+.recommended-mountains-grid {
+  background-color: rgb(240, 240, 240);
+  padding: 20px;
+}
+
+.recommended-mountain-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: solid 1px rgb(215, 215, 215);
+  /* background-color: white; */
+}
+
+.mountain-image {
+  height: 200px;
+  width: 242.569px;
+  border: solid 1px rgb(113, 113, 113);
+}
+
+iframe {
+  height: 200px;
+  width: 242.569px;
+  border: solid 1px rgb(0, 0, 0);
+}
