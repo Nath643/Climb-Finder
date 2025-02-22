@@ -15,16 +15,15 @@
   <body>
     <header>
       <nav>
-        <!-- refer to the more css folder - drop down menu for creating this (you can get the hamburder menu pic from yt project)-->
-        <button class="hamburger-menu-button">
+        <button class="hamburger-menu-button" onclick="showItems('.pages')">
           <img src="icons/hamburger-menu-icon.png" alt="hamburder menu icon" class="hamburger-menu-icon">
         </button>
 
-        <!-- <div class="pages">
-          <a href="">Completed Climbs</a>
-          <a href="">Planned Climbs</a>
-          <a href="">Your Profile</a>
-        </div> -->
+        <div class="pages">
+          <a href="completed-climbs.html">Completed Climbs</a>
+          <a href="planned-climbs.html">Planned Climbs</a>
+          <a href="profile.html">Your Profile</a>
+        </div>
       </nav>
 
       <div class="logo">
@@ -32,18 +31,17 @@
       </div>
 
       <div class="country">
-        <!-- refer to the more css folder - drop down menu for creating this -->
-        <button class="country-button">
+        <button class="country-button" onclick="showItems('.countries')">
           <p>UK</p>
         </button>
-
-        <!-- <div class="countries">
-          <a href="">Australia</a>
-          <a href="">Canada</a>
-          <a href="">Norway</a>
-          <a href="">Sweden</a>
-          <a href="">USA</a>
-        </div> -->
+        <div class="countries">
+          <a onclick="changeCountry(Australia)">Australia</a>
+          <a onclick="changeCountry(Canada)">Canada</a>
+          <a onclick="changeCountry(Norway)">Norway</a>
+          <a onclick="changeCountry(Sweden)">Sweden</a>
+          <a onclick="changeCountry(USA)">USA</a>
+        </div>
+          <!-- later on, save a bunch of countries in js (data)-maybe from a backend? then render these buttons from the data, then loop through them and add event listeners to make interactive - i.e. when you click it changes country displayed on page and what is in local storage -->
       </div>
     </header>
 
@@ -108,5 +106,7 @@
         </div>
       </section>
     </main>
+
+    <script src="scripts/mainPage.js"></script>
   </body>
 </html>

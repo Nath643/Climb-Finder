@@ -10,13 +10,13 @@ header {
   justify-content: space-between;
   border-bottom: solid 1px rgb(170, 170, 170);
   background-color: rgb(227, 255, 227);
-  font-family: "Kanit", serif;
-  font-weight: 800;
-  font-style: normal;
 }
 
 header .logo h1 {
   color: rgb(0, 98, 0);
+  font-family: "Kanit", serif;
+  font-weight: 800;
+  font-style: normal;
 }
 
 .hamburger-menu-button {
@@ -59,6 +59,43 @@ header .logo h1 {
 
 .country-button:hover {
   opacity: 0.7;
+}
+
+.countries, .pages {
+  position: absolute;
+  display: none;
+  background-color: rgb(236, 236, 236);
+  box-shadow: 1px 1px 5px 2px rgba(0, 0, 0, 0.368);
+  border-radius: 5px;
+}
+
+.pages {
+  left: 45px;
+  top: 80px;
+}
+
+.countries {
+  right: 30px;
+  top: 80px;
+}
+
+.countries a, .pages a {
+  display: block;
+  cursor: pointer;
+  color: rgb(71, 71, 71);
+  padding: 20px 5px 20px 5px;
+  font-size: 18px;
+  text-decoration: none;
+  transition: 0.1s;
+}
+
+.countries a:hover, .pages a:hover {
+  color: rgb(20, 20, 20);
+  background-color: rgb(215, 215, 215);
+}
+
+.show-items {
+  display: block;
 }
 
 
