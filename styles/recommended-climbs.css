@@ -114,9 +114,10 @@ header .logo h1 {
 .recommended-mountain-section {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
+  /* align-items: center; */
   margin-bottom: 25px;
   padding-bottom: 15px;
-  border-bottom: solid 1px rgb(215, 215, 215);
+  border-bottom: solid 1px rgb(215, 215, 215) /*I could make this render only if there is a section below it*/
   /* background-color: white; */
 }
 
@@ -130,4 +131,28 @@ iframe {
   height: 200px;
   width: 242.569px;
   border: solid 1px rgb(0, 0, 0);
+}
+
+.more-info-button-container {
+  position: relative;
+}
+
+.more-info-button {
+  background-color: rgb(24, 101, 0);
+  color: rgb(232, 232, 232);
+  font-size: 16px;
+  border-radius: 8px;
+  padding: 10px;
+  border: none;
+  box-shadow: 1px 1px 4px 1px rgba(0, 0, 0, 0.205);
+  font-weight: bold;
+  position: absolute;
+  cursor: pointer;
+  top: 83.5px;
+}
+
+.more-info-button:hover {
+  top: 84.5px;
+  left: 1px;
+  box-shadow: 0.2px 0.2px 2px 0.5px rgba(0, 0, 0, 0.205);
 }
