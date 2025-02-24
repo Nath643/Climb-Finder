@@ -1,0 +1,127 @@
+body {
+  padding: 0;
+  margin: 0;
+  font-family: Verdana, arial;
+}
+
+
+.page-title {
+  text-align: center;
+  margin-bottom: 5px;
+  margin-top: 40px;
+}
+
+
+.completed-mountains-grid {
+  background-color: rgb(240, 240, 240);
+  padding: 20px;
+}
+
+.completed-mountain-section {
+  display: grid;
+  grid-template-columns: 213.63px 1fr 1fr 1fr 1fr;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: solid 1px rgb(215, 215, 215); /*I could make this render only if there is a section below it*/
+  /* background-color: white; */
+}
+
+.green-circle-container {
+  position: relative;
+}
+
+.green-circle {
+  position: absolute;
+  top: 77.5px;
+  left: 81.8px;
+  background-color: rgb(67, 211, 67);
+  height: 50px;
+  width: 50px;
+  border-radius: 25px;
+}
+
+.mountain-image {
+  height: 200px;
+  width: 242.569px;
+  border: solid 1px rgb(113, 113, 113);
+}
+
+iframe {
+  height: 200px;
+  width: 242.569px;
+  border: solid 1px rgb(0, 0, 0);
+}
+
+.more-info-button-container {
+  position: relative;
+}
+
+.more-info-button {
+  background-color: rgb(24, 101, 0);
+  color: rgb(232, 232, 232);
+  font-size: 16px;
+  border-radius: 8px;
+  padding: 10px;
+  border: none;
+  box-shadow: 1px 1px 4px 1px rgba(0, 0, 0, 0.205);
+  font-weight: bold;
+  position: absolute;
+  cursor: pointer;
+  top: 83.5px;
+}
+
+.more-info-button:hover {
+  top: 84.5px;
+  left: 1px;
+  box-shadow: 0.2px 0.2px 2px 0.5px rgba(0, 0, 0, 0.205);
+}
+
+
+.add-completed-mountain-section {
+  display: grid;
+  grid-template-columns: 200px 200px;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: solid 1px rgb(215, 215, 215) /*I could make this render only if there is a section below it*/
+}
+
+.plus-container {
+  position: relative;
+  height: 221px;
+}
+
+.plus-icon {
+  position: absolute;
+  top: 77.5px;
+  left: 81.8px;
+  background-color: rgb(67, 211, 67);
+  height: 50px;
+  width: 50px;
+  border-radius: 25px;
+}
+
+.add-new-climb-button-container {
+  position: relative;
+  height: 221px;
+}
+
+.add-new-climb-button {
+  background-color: rgb(24, 101, 0);
+  color: rgb(232, 232, 232);
+  font-size: 16px;
+  border-radius: 8px;
+  padding: 10px;
+  border: none;
+  box-shadow: 1px 1px 4px 1px rgba(0, 0, 0, 0.205);
+  font-weight: bold;
+  cursor: pointer;
+  position: absolute;
+  top: 83.5px;
+  left: 10px;
+}
+
+.add-new-climb-button:hover {
+  top: 84.5px;
+  left: 11px;
+  box-shadow: 0.2px 0.2px 2px 0.5px rgba(0, 0, 0, 0.205);
+}

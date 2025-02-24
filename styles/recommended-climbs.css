@@ -4,100 +4,6 @@ body {
   font-family: Verdana, arial;
 }
 
-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: solid 1px rgb(170, 170, 170);
-  background-color: rgb(227, 255, 227);
-}
-
-header .logo h1 {
-  color: rgb(0, 98, 0);
-  font-family: "Kanit", serif;
-  font-weight: 800;
-  font-style: normal;
-}
-
-.hamburger-menu-button {
-  width: 50px;
-  height: 50px;
-  margin-left: 50px;
-  background-color: rgb(227, 255, 227);
-  border: none;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.hamburger-menu-button:hover {
-  opacity: 0.7;
-}
-
-.hamburger-menu-icon {
-  width: 30px;
-}
-
-.country-button {
-  width: 50px;
-  height: 50px;
-  margin-right: 50px;
-  background-color: rgb(227, 255, 227);
-  border: solid 2px black;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: bold;
-  position: relative;
-  transition: 0.2s;
-}
-
-.country-button p {
-  font-size: 18px;
-  position: absolute;
-  top: -5px;
-  left: 9px;
-}
-
-.country-button:hover {
-  opacity: 0.7;
-}
-
-.countries, .pages {
-  position: absolute;
-  display: none;
-  background-color: rgb(236, 236, 236);
-  box-shadow: 1px 1px 5px 2px rgba(0, 0, 0, 0.368);
-  border-radius: 5px;
-}
-
-.pages {
-  left: 45px;
-  top: 80px;
-}
-
-.countries {
-  right: 30px;
-  top: 80px;
-}
-
-.countries a, .pages a {
-  display: block;
-  cursor: pointer;
-  color: rgb(71, 71, 71);
-  padding: 20px 5px 20px 5px;
-  font-size: 18px;
-  text-decoration: none;
-  transition: 0.1s;
-}
-
-.countries a:hover, .pages a:hover {
-  color: rgb(20, 20, 20);
-  background-color: rgb(215, 215, 215);
-}
-
-.show-items {
-  display: block;
-}
-
 
 .page-title {
   text-align: center;
@@ -119,6 +25,10 @@ header .logo h1 {
   padding-bottom: 15px;
   border-bottom: solid 1px rgb(215, 215, 215) /*I could make this render only if there is a section below it*/
   /* background-color: white; */
+}
+
+.mountain-image-container {
+  margin-left: 50px;
 }
 
 .mountain-image {

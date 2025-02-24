@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Climb Finder</title>
+
+    <link rel="stylesheet" href="styles/a-mountain-page.css">
+    <link rel="stylesheet" href="styles/header.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;700;800;900&display=swap" rel="stylesheet">
+  </head>
+
+  <body>
+    <header>
+      <nav>
+        <button class="hamburger-menu-button" onclick="showItems('.pages')">
+          <img src="icons/hamburger-menu-icon.png" alt="hamburder menu icon" class="hamburger-menu-icon">
+        </button>
+
+        <div class="pages">
+          <a href="index.html">Recommended Climbs</a>
+          <a href="completed-climbs.html">Completed Climbs</a>
+          <a href="planned-climbs.html">Planned Climbs</a>
+          <a href="profile.html">Your Profile</a>
+        </div>
+      </nav>
+
+      <div class="logo">
+        <h1>Climb Finder</h1>
+      </div>
+
+      <div class="country">
+        <button class="country-button" onclick="showItems('.countries')">
+          <p>UK</p>
+        </button>
+        <div class="countries">
+          <a onclick="changeCountry(Australia)">Australia</a>
+          <a onclick="changeCountry(Canada)">Canada</a>
+          <a onclick="changeCountry(Norway)">Norway</a>
+          <a onclick="changeCountry(Sweden)">Sweden</a>
+          <a onclick="changeCountry(USA)">USA</a>
+        </div>
+          <!-- later on, save a bunch of countries in js (data)-maybe from a backend? then render these buttons from the data, then loop through them and add event listeners to make interactive - i.e. when you click it changes country displayed on page and what is in local storage -->
+      </div>
+    </header>
+
+    <main>
+      <section class="page-title">
+        <h2>Helvellyn</h2>
+      </section>
+
+      <section class="a-mountain-grid">
+        <div class="image-and-map-container">
+          <div class="mountain-image-container">
+            <img src="mountain-images/helvellyn.png" alt="photo of Helvellyn mountain, Cumbria, UK." class="mountain-image">
+          </div>
+
+          <div class="map">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d9261.512034460757!2d-3.0275461196981057!3d54.52683001487671!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x487cc27e37923d2d%3A0x103c674a227ad7fe!2sHelvellyn!5e0!3m2!1sen!2sje!4v1740168779790!5m2!1sen!2sje" width="600" height="450" style="border: solid 1px rgb(113, 113, 113);" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </div>
+        </div>
+
+        <div class="climb-route-image-container">
+          <img src="climb-route-maps/helvellyn-climb-route.jpg" alt="photo of Helvellyn mountain climb route map." class="climb-route-image">
+        </div>
+
+        <div class="mountain-info">
+          <div class="mountain-description">
+            <p>Height: 978m</p>
+            <p>Difficulty: medium</p>
+            <!-- <p>Views: a good view of most of the beautiful Lake District, from the centre of the Lake District.</p> - this should probably be on the actual mountain page -->
+            <p>Total distance of the climb: 7 miles</p>
+            <p>Views from the summit: most of the Lake District, from central Lake District.</p>
+          </div>
+
+          <!-- <div class="add-to-planned-climbs-button-container"> -->
+            <button class="add-to-planned-climbs-button">Add to planned climbs</button>
+          <!-- </div> -->
+  
+          <!-- <div class="add-to-completed-climbs-button-container"> -->
+            <button class="add-to-completed-climbs-button">Add to completed climbs</button>
+          <!-- </div> -->
+        </div>
+      </section>
+    </main>
+
+    <script src="scripts/mainPage.js"></script>
+  </body>
+</html>

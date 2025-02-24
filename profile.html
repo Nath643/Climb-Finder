@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Climb Finder</title>
+
+    <link rel="stylesheet" href="styles/profile.css">
+    <link rel="stylesheet" href="styles/header.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;700;800;900&display=swap" rel="stylesheet">
+  </head>
+
+  <body>
+    <header>
+      <nav>
+        <button class="hamburger-menu-button" onclick="showItems('.pages')">
+          <img src="icons/hamburger-menu-icon.png" alt="hamburder menu icon" class="hamburger-menu-icon">
+        </button>
+
+        <div class="pages">
+          <a href="index.html">Recommended Climbs</a>
+          <a href="completed-climbs.html">Completed Climbs</a>
+          <a href="planned-climbs.html">Planned Climbs</a>
+          <a href="profile.html">Your Profile</a>
+        </div>
+      </nav>
+
+      <div class="logo">
+        <h1>Climb Finder</h1>
+      </div>
+
+      <div class="country">
+        <button class="country-button" onclick="showItems('.countries')">
+          <p>UK</p>
+        </button>
+        <div class="countries">
+          <a onclick="changeCountry(Australia)">Australia</a>
+          <a onclick="changeCountry(Canada)">Canada</a>
+          <a onclick="changeCountry(Norway)">Norway</a>
+          <a onclick="changeCountry(Sweden)">Sweden</a>
+          <a onclick="changeCountry(USA)">USA</a>
+        </div>
+          <!-- later on, save a bunch of countries in js (data)-maybe from a backend? then render these buttons from the data, then loop through them and add event listeners to make interactive - i.e. when you click it changes country displayed on page and what is in local storage -->
+      </div>
+    </header>
+
+    <main>
+      <section class="page-title">
+        <h2>Your Profile</h2>
+      </section>
+
+      <section class="profile-grid">
+        <div class="age-container profile-grid-subcontainer">
+          <h3>Your age: 21</h3>
+          <button>Change your age</button> <!--perhaps a built input like calendar?-->
+        </div>
+
+        <div class="fitness-container profile-grid-subcontainer">
+          <h3>Your fitness level: intermediate</h3>
+          <button>Change your fitness level</button>
+          <!-- <div class="fitness-levels">
+            <a href="">Beginner</a>
+            <a href="">Intermediate</a>
+            <a href="">Strong</a>
+            <a href="">Athlete</a>
+          </div> DROP DOWN MENU-->
+        </div>
+
+        <div class="transport-container profile-grid-subcontainer">
+          <h3>Your mode of transport: car</h3>
+          <button>Change your mode of transport</button>
+        </div>
+
+        <div class="looking-for-container profile-grid-subcontainer">
+          <h3>What you are looking for in climbing: exercise, views.</h3>
+          <button>Change what you are looking for in climbing</button>
+        </div>
+
+        <div class="gear-container profile-grid-subcontainer">
+          <h3>What gear you have:</h3>
+          <ul>
+            <li>A warm waterproof coat.</li>
+            <li>A good pair of walking shoes or boots.</li>
+            <li>A GPS.</li>
+          </ul>
+          <button>Change your gear</button>
+        </div>
+
+        <div class="stats-container profile-grid-subcontainer">
+          <h3>Total distance completed: 34 miles</h3>
+          <h3>Total altitude climbed: 21 miles</h3>
+        </div>
+      </section>
+    </main>
+
+    <script src="scripts/mainPage.js"></script>
+  </body>
+</html>
