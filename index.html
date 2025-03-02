@@ -16,7 +16,7 @@
   <body>
     <header>
       <nav>
-        <button class="hamburger-menu-button" onclick="showItems('.pages')">
+        <button class="hamburger-menu-button">
           <img src="icons/hamburger-menu-icon.png" alt="hamburder menu icon" class="hamburger-menu-icon">
         </button>
 
@@ -33,7 +33,7 @@
       </div>
 
       <div class="country">
-        <button class="country-button" onclick="showItems('.countries')">
+        <button class="country-button">
           <p>UK</p>
         </button>
         <div class="countries">
@@ -53,67 +53,10 @@
       </section>
 
       <section class="recommended-mountains-grid">
-        <div class="recommended-mountain-section">
-          <div class="mountain-image-container">
-            <img src="mountain-images/helvellyn.png" alt="photo of Helvellyn mountain, Cumbria, UK." class="mountain-image">
-          </div>
-
-          <div class="map">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d18475.64710328457!2d-3.026492494242575!3d54.527947844254896!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x487cc27e37923d2d%3A0x103c674a227ad7fe!2sHelvellyn!5e1!3m2!1sen!2sje!4v1740480931993!5m2!1sen!2sje" width="600" height="450" style="border: solid 1px rgb(113, 113, 113);" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-          </div>
-
-          <div class="mountain-info">
-            <div class="mountain-name">
-              <h3>Helvellyn</h3>
-            </div>
-
-            <div class="mountain-description">
-              <p>Height: 978m</p>
-              <p>Difficulty: medium</p>
-              <!-- <p>Views: a good view of most of the beautiful Lake District, from the centre of the Lake District.</p> - this should probably be on the actual mountain page -->
-              <p>Total distance of the climb: 7 miles</p>
-            </div>
-          </div>
-
-          <div class="more-info-button-container">
-            <a href="a-mountain-page.html">
-              <button class="more-info-button">More Info About This Mountain</button>
-            </a>
-          </div>
-          <!-- I could insert mountain name here in js-->
-        </div>
-
-        <div class="recommended-mountain-section">
-          <div class="mountain-image-container">
-            <img src="mountain-images/helvellyn.png" alt="photo of Helvellyn mountain, Cumbria, UK." class="mountain-image">
-          </div>
-
-          <div class="map">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d18475.64710328457!2d-3.026492494242575!3d54.527947844254896!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x487cc27e37923d2d%3A0x103c674a227ad7fe!2sHelvellyn!5e1!3m2!1sen!2sje!4v1740480931993!5m2!1sen!2sje" width="600" height="450" style="border: solid 1px rgb(113, 113, 113);" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-          </div>
-
-          <div class="mountain-info">
-            <div class="mountain-name">
-              <h3>Helvellyn</h3>
-            </div>
-
-            <div class="mountain-description">
-              <p>Height: 978m</p>
-              <p>Difficulty: medium</p>
-              <!-- <p>Views: a good view of most of the beautiful Lake District, from the centre of the Lake District.</p> - this should probably be on the actual mountain page -->
-              <p>Total distance of the climb: 7 miles</p>
-            </div>
-          </div>
-
-          <div class="more-info-button-container">
-            <a href="a-mountain-page.html">
-              <button class="more-info-button">More Info About This Mountain</button>
-            </a>
-          </div>
-        </div>
+        
       </section>
     </main>
 
-    <script src="scripts/mainPage.js"></script>
+    <script type="module" src="scripts/mainPage.js"></script>
   </body>
 </html>

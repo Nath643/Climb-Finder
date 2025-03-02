@@ -1,5 +1,6 @@
 export const mountains = [
   {
+    id: "helv",
     name: "Helvellyn",
     image: "mountain-images/helvellyn.png",
     mapImage: "climb-route-maps/helvellyn-route-map.jpg",
@@ -18,6 +19,7 @@ export const mountains = [
     recommendedTransport: "car"
   },
   {
+    id: "blen",
     name: "Blencathra",
     image: "mountain-images/blencathra.jpg",
     mapImage: "climb-route-maps/blencathra-route-map.png",
@@ -35,6 +37,7 @@ export const mountains = [
     recommendedTransport: "car"
   },
   {
+    id: "scaf",
     name: "Scafell Pike",
     image: "mountain-images/scafell-pike.jpg",
     mapImage: "climb-route-maps/scafell-pike-route-map.png",
@@ -53,6 +56,7 @@ export const mountains = [
     recommendedTransport: "car"
   }, 
   {
+    id: "benn",
     name: "Ben Nevis",
     image: "mountain-images/ben-nevis.jpg",
     mapImage: "climb-route-maps/ben-nevis-route-map.png",
@@ -72,6 +76,7 @@ export const mountains = [
     recommendedTransport: "car"
   },
   {
+    id: "cair",
     name: "Cairn Gorm",
     image: "mountain-images/cairn-gorm.jpg",
     mapImage: "climb-route-maps/cairn-gorm-route-map.jpg",
@@ -91,6 +96,7 @@ export const mountains = [
     recommendedTransport: "car"
   },
   {
+    id: "snow",
     name: "Snowdon",
     image: "mountain-images/snowdon.jpg",
     mapImage: "climb-route-maps/snowdon-route-map.jpg",
@@ -107,4 +113,4 @@ export const mountains = [
     recommendedFitness: "intermediate",
     recommendedTransport: "car"
   }
-]
+];

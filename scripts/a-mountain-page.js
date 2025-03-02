@@ -1,0 +1,1 @@
+// get the param out of url, use that to de-duplicate mountain data, display it.
