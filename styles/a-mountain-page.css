@@ -87,13 +87,11 @@ iframe {
 }
 
 .add-to-completed-climbs-button:hover {
-  top: 1px;
-  left: 1px;
+  top: 301px;
   box-shadow: 0.2px 0.2px 2px 0.5px rgba(0, 0, 0, 0.205);
 }
 
 .add-to-planned-climbs-button:hover {
-  top: 1px;
-  left: 1px;
+  top: 231px;
   box-shadow: 0.2px 0.2px 2px 0.5px rgba(0, 0, 0, 0.205);
 }
