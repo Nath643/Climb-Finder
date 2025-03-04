@@ -1,3 +1,5 @@
+import { mountains } from "../data/mountains.js";
+
 document.querySelector('.hamburger-menu-button').addEventListener('click', () => {
   showItems('.pages');
 });
@@ -17,6 +19,60 @@ function showItems(menuName) {
   }
 }
 
+renderAMountainPage();
+
+function renderAMountainPage() {
+  const url = new URL(window.location.href);
+  const mountainId = url.searchParams.get('mountainId');
+
+  let matchingMountain;
+
+  mountains.forEach((mountain) => {
+    if(mountain.id === mountainId) {
+      matchingMountain = mountain;
+    }
+
+    return matchingMountain;
+  });
+
+  let aMountainHTML = `
+    <section class="page-title">
+      <h2>${matchingMountain.name}</h2>
+    </section>
+
+    <section class="a-mountain-grid">
+      <div class="image-and-map-container">
+        <div class="mountain-image-container">
+          <img src="${matchingMountain.image}" alt="photo of ${matchingMountain.name} mountain." class="mountain-image">
+        </div>
+
+        <div class="map">
+          ${matchingMountain.mapEmbed}
+        </div>
+      </div>
+
+      <div class="climb-route-image-container">
+        <img src="${matchingMountain.mapImage}" alt="photo of ${matchingMountain.name} mountain climb route map." class="climb-route-image">
+      </div>
+
+      <div class="mountain-info">
+        <div class="mountain-description">
+          <p>Height: ${matchingMountain.height} metres</p>
+          <p>Difficulty: ${matchingMountain.difficulty}</p>
+          <p>Views: ${matchingMountain.views}</p>
+          <p>Total distance of the climb: ${matchingMountain.distance} miles</p>
+        </div>
+
+        <button class="add-to-planned-climbs-button">Add to planned climbs</button>
+
+        <button class="add-to-completed-climbs-button">Add to completed climbs</button>
+      </div>
+    </section>
+  `;
+
+  document.querySelector('.a-mountain-main').innerHTML = aMountainHTML;
+}
 
 
-// get the param out of url, use that to de-duplicate mountain data, display it.
+
+

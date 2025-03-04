@@ -40,7 +40,7 @@ export const mountains = [
     id: "scaf",
     name: "Scafell Pike",
     image: "mountain-images/scafell-pike.jpg",
-    mapImage: "climb-route-maps/scafell-pike-route-map.png",
+    mapImage: "climb-route-maps/scafell-pike-route-map.jpg",
     height: 978,
     difficulty: "medium",
     views: "a good view from the West of the Lake District, including a view of Wast Water.",
