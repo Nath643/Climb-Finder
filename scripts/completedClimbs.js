@@ -1,3 +1,4 @@
+import { formatDate } from "../utils/formatDate.js";
 import { getMountain } from "../data/mountains.js";
 import { completedClimbs } from "../data/completedClimbs.js";
 
@@ -51,7 +52,7 @@ function renderCompletedClimbs() {
         </div>
 
         <div class="climb-info">
-          <p>Date: ${climb.date}</p>
+          <p>Date: ${formatDate(climb.date)}</p>
           <p>Duration: ${climb.duration}</p>
           <p>Weather conditions: ${climb.weather}</p>
           <p>Companions: ${climb.companions}</p>
