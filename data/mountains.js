@@ -1,3 +1,15 @@
+export function getMountain(mountainId) {
+  let matchingMountain;
+
+  mountains.forEach((mountain) => {
+    if (mountainId === mountain.id) {
+      matchingMountain = mountain;
+    }
+  })
+
+  return matchingMountain;
+}
+
 export const mountains = [
   {
     id: "helv",
