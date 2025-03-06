@@ -2,7 +2,10 @@
 
 export let profile = {
   age: 21,
-  transport: 'car, bike',
+  transport: [
+    'car',
+    'bike'
+  ],
   gear: [
     "Waterproof coat",
     "Walking boots",
