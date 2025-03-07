@@ -1,5 +1,5 @@
 import { addPlannedClimb } from "../data/plannedClimbs.js";
-import { getMountain } from "../data/mountains.js";
+import { getMountain, mountains } from "../data/mountains.js";
 import { plannedClimbs } from "../data/plannedClimbs.js";
 
 document.querySelector('.hamburger-menu-button').addEventListener('click', () => {
@@ -33,8 +33,35 @@ function renderPlannedClimbs() {
       <div class="add-new-climb-button-container">
         <button class="add-new-climb-button js-add-planned-climb-button">Add new climb</button>
       </div>
+
+      <div class="select-mountain js-select-mountain">
+        <p>Mountain climbed:</p>
+        <select class="js-mountain-dropdown" name="dropdown">
+          ${renderMountainsList(mountains)}
+        </select>
+      </div>
+
+      <div class="select-date js-select-date">
+        <p>Date of climb:</p>
+        <input type="date" class="js-climb-date" name="date" max="${new Date()}" required />
+      </div>
+
+      <div class="buttons-container js-buttons-container">
+        <button type="submit" class="js-submit-button">Submit</button>
+        <button class="js-cancel-button">Cancel</button>
+      </div>
     </div>
   `;
+
+  function renderMountainsList(mountains) {
+    let html = '<option value="" disabled selected>Select an option</option>';
+
+    mountains.forEach((mountain) => {
+      html += `<option value="${mountain.id}">${mountain.name}</option>`;
+    });
+
+    return html;
+  }
 
   plannedClimbs.forEach((plannedClimb) => {
     const mountain = getMountain(plannedClimb.mountainId);
@@ -93,8 +120,36 @@ function renderPlannedClimbs() {
   }
 
   document.querySelector('.js-add-planned-climb-button').addEventListener('click', () => {
-    addPlannedClimb('helv', new Date());
-    renderPlannedClimbs();
+    document.querySelector('.js-add-planned-climb-button').classList.add('climb-button-clicked');
+    document.querySelector('.js-select-mountain').classList.remove('select-mountain');
+    document.querySelector('.js-select-date').classList.remove('select-date');
+    document.querySelector('.js-buttons-container').classList.remove('buttons-container');
+  });
+
+  document.querySelector('.js-submit-button').addEventListener('click', () => {
+    const mountain = document.querySelector('.js-mountain-dropdown').value;
+    const date = document.querySelector('.js-climb-date').value;
+
+    if (!mountain || !date) {
+      alert("Please fill out fields");
+    }
+    else {
+      addPlannedClimb(mountain, date);
+
+      document.querySelector('.js-add-planned-climb-button').classList.remove('climb-button-clicked');
+      document.querySelector('.js-select-mountain').classList.add('select-mountain');
+      document.querySelector('.js-select-date').classList.add('select-date');
+      document.querySelector('.js-buttons-container').classList.add('buttons-container');
+      
+      renderPlannedClimbs();
+    }
+  });
+
+  document.querySelector('.js-cancel-button').addEventListener('click', () => {
+    document.querySelector('.js-add-planned-climb-button').classList.remove('climb-button-clicked');
+    document.querySelector('.js-select-mountain').classList.add('select-mountain');
+    document.querySelector('.js-select-date').classList.add('select-date');
+    document.querySelector('.js-buttons-container').classList.add('buttons-container');
   });
 }
 

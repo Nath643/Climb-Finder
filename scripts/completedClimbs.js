@@ -70,8 +70,9 @@ function renderCompletedClimbs() {
         <input type="text" class="js-companions-input" name="companions-input" />
       </div>
 
-      <div class="submit-button js-submit-button">
-        <button type="submit">Submit</button>
+      <div class="buttons-container js-buttons-container">
+        <button type="submit" class="js-submit-button">Submit</button>
+        <button class="js-cancel-button">Cancel</button>
       </div>
     </div>
   `;
@@ -148,7 +149,7 @@ function renderCompletedClimbs() {
     document.querySelector('.js-select-companions').classList.remove('select-companions');
     document.querySelector('.js-select-duration').classList.remove('select-duration');
     document.querySelector('.js-select-weather-conditions').classList.remove('select-weather-conditions');
-    document.querySelector('.js-submit-button').classList.remove('submit-button');
+    document.querySelector('.js-buttons-container').classList.remove('buttons-container');
   });
 
   document.querySelector('.js-submit-button').addEventListener('click', () => {
@@ -170,11 +171,21 @@ function renderCompletedClimbs() {
       document.querySelector('.js-select-date').classList.add('select-date');
       document.querySelector('.js-select-companions').classList.add('select-companions');
       document.querySelector('.js-select-duration').classList.add('select-duration');
-      document.querySelector('.js-select-weather-conditions').classList.add('select-conditions');
-      document.querySelector('.js-submit-button').classList.add('submit-button');
+      document.querySelector('.js-select-weather-conditions').classList.add('select-weather-conditions');
+      document.querySelector('.js-buttons-container').classList.add('buttons-container');
       
       renderCompletedClimbs();
     }
+  });
+
+  document.querySelector('.js-cancel-button').addEventListener('click', () => {
+    document.querySelector('.js-add-completed-climb-button').classList.remove('climb-button-clicked');
+    document.querySelector('.js-select-mountain').classList.add('select-mountain');
+    document.querySelector('.js-select-date').classList.add('select-date');
+    document.querySelector('.js-select-companions').classList.add('select-companions');
+    document.querySelector('.js-select-duration').classList.add('select-duration');
+    document.querySelector('.js-select-weather-conditions').classList.add('select-weather-conditions');
+    document.querySelector('.js-buttons-container').classList.add('buttons-container');
   });
 }
 

@@ -66,7 +66,7 @@ body {
   box-shadow: 0.2px 0.2px 2px 0.5px rgba(0, 0, 0, 0.205);
 }
 
-.select-mountain, .select-date, .select-companions, .select-duration, .select-weather-conditions, .submit-button {
+.select-mountain, .select-date, .select-companions, .select-duration, .select-weather-conditions, .buttons-container {
   display: none;
 }
 
