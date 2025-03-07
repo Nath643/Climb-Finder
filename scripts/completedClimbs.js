@@ -1,5 +1,6 @@
+import { addCompletedClimb } from "../data/completedClimbs.js";
 import { formatDate } from "../utils/formatDate.js";
-import { getMountain } from "../data/mountains.js";
+import { getMountain, mountains } from "../data/mountains.js";
 import { completedClimbs } from "../data/completedClimbs.js";
 
 document.querySelector('.hamburger-menu-button').addEventListener('click', () => {
@@ -24,7 +25,66 @@ function showItems(menuName) {
 renderCompletedClimbs();
 
 function renderCompletedClimbs() {
-  let completedClimbsHTML = '';
+  let completedClimbsHTML = `
+    <div class="add-completed-mountain-section">
+      <div class="plus-container">
+        <img src="icons/plus.png" alt="a plus sign icon" class="plus-icon">
+      </div>
+
+      <div class="add-new-climb-button-container">
+        <button class="add-new-climb-button js-add-completed-climb-button">Add new climb</button>
+      </div>
+
+      <div class="select-mountain js-select-mountain">
+        <p>Mountain climbed:</p>
+        <select class="js-mountain-dropdown" name="dropdown">
+          ${renderMountainsList(mountains)}
+        </select>
+      </div>
+
+      <div class="select-date js-select-date">
+        <p>Date of climb:</p>
+        <input type="date" class="js-climb-date" name="date" max="${new Date()}" required />
+      </div>
+
+      <div class="select-duration js-select-duration">
+        <p>Duration of climb (hours, minutes):</p>
+        <input type="number" class="js-duration-hours" name="duration-hours" />
+        <input type="number" class="js-duration-mins" name="duration-mins" />
+      </div>
+
+      <div class="select-weather-conditions js-select-weather-conditions">
+        <p>Weather conditions:</p>
+        <select class="js-weather-dropdown" name="dropdown">
+          <option value="" disabled selected>Select an option</option>
+          <option value="clear">Clear</option>
+          <option value="overcast">Overcast</option>
+          <option value="raining">Raining</option>
+          <option value="snow">Snow</option>
+          <option value="storm">Storm</option>
+        </select>
+      </div>
+
+      <div class="select-companions js-select-companions">
+        <p>Companions:</p>
+        <input type="text" class="js-companions-input" name="companions-input" />
+      </div>
+
+      <div class="submit-button js-submit-button">
+        <button type="submit">Submit</button>
+      </div>
+    </div>
+  `;
+
+  function renderMountainsList(mountains) {
+    let html = '<option value="" disabled selected>Select an option</option>';
+
+    mountains.forEach((mountain) => {
+      html += `<option value="${mountain.id}">${mountain.name}</option>`;
+    });
+
+    return html;
+  }
   
   completedClimbs.forEach((climb) => {
     const mountain = getMountain(climb.mountainId);
@@ -67,17 +127,54 @@ function renderCompletedClimbs() {
     `;
   });
 
-  completedClimbsHTML += `
-    <div class="add-completed-mountain-section">
-    <div class="plus-container">
-      <img src="icons/plus.png" alt="a plus sign icon" class="plus-icon">
-    </div>
+  // function renderCompanions(climb) {
+  //   let html = '';
 
-    <div class="add-new-climb-button-container">
-      <button class="add-new-climb-button">Add new climb</button>
-    </div>
-  `;
-  
+  //   climb.companions.forEach((companion) => {
+  //     html += `
+  //       <span>${companion}.</span>
+  //     `;
+  //   });
+
+  //   return html;
+  // }
+
   document.querySelector('.completed-mountains-grid').innerHTML = completedClimbsHTML;
+
+  document.querySelector('.js-add-completed-climb-button').addEventListener('click', () => {
+    document.querySelector('.js-add-completed-climb-button').classList.add('climb-button-clicked');
+    document.querySelector('.js-select-mountain').classList.remove('select-mountain');
+    document.querySelector('.js-select-date').classList.remove('select-date');
+    document.querySelector('.js-select-companions').classList.remove('select-companions');
+    document.querySelector('.js-select-duration').classList.remove('select-duration');
+    document.querySelector('.js-select-weather-conditions').classList.remove('select-weather-conditions');
+    document.querySelector('.js-submit-button').classList.remove('submit-button');
+  });
+
+  document.querySelector('.js-submit-button').addEventListener('click', () => {
+    const mountain = document.querySelector('.js-mountain-dropdown').value;
+    const date = document.querySelector('.js-climb-date').value;
+    const durationHours = document.querySelector('.js-duration-hours').value;
+    const durationMins = document.querySelector('.js-duration-mins').value;
+    const weather = document.querySelector('.js-weather-dropdown').value;
+    const companions = document.querySelector('.js-companions-input').value;
+
+    if (!mountain || !date || !durationHours || !durationMins || !weather || !companions) {
+      alert("Please fill out fields");
+    }
+    else {
+      addCompletedClimb(mountain, date, durationHours, durationMins, weather, companions);
+
+      document.querySelector('.js-add-completed-climb-button').classList.remove('climb-button-clicked');
+      document.querySelector('.js-select-mountain').classList.add('select-mountain');
+      document.querySelector('.js-select-date').classList.add('select-date');
+      document.querySelector('.js-select-companions').classList.add('select-companions');
+      document.querySelector('.js-select-duration').classList.add('select-duration');
+      document.querySelector('.js-select-weather-conditions').classList.add('select-conditions');
+      document.querySelector('.js-submit-button').classList.add('submit-button');
+      
+      renderCompletedClimbs();
+    }
+  });
 }
 

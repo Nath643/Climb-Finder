@@ -1,3 +1,4 @@
+import { addPlannedClimb } from "../data/plannedClimbs.js";
 import { getMountain } from "../data/mountains.js";
 import { plannedClimbs } from "../data/plannedClimbs.js";
 
@@ -23,7 +24,17 @@ function showItems(menuName) {
 renderPlannedClimbs();
 
 function renderPlannedClimbs() {
-  let plannedClimbsHTML = '';
+  let plannedClimbsHTML = `
+    <div class="add-completed-mountain-section">
+      <div class="plus-container">
+        <img src="icons/plus.png" alt="a plus sign icon" class="plus-icon">
+      </div>
+
+      <div class="add-new-climb-button-container">
+        <button class="add-new-climb-button js-add-planned-climb-button">Add new climb</button>
+      </div>
+    </div>
+  `;
 
   plannedClimbs.forEach((plannedClimb) => {
     const mountain = getMountain(plannedClimb.mountainId);
@@ -80,5 +91,10 @@ function renderPlannedClimbs() {
 
     return html;
   }
+
+  document.querySelector('.js-add-planned-climb-button').addEventListener('click', () => {
+    addPlannedClimb('helv', new Date());
+    renderPlannedClimbs();
+  });
 }
 
