@@ -24,6 +24,15 @@ function showItems(menuName) {
 
 renderCompletedClimbs();
 
+const url = new URL(window.location.href);
+const formOpen = url.searchParams.get('formOpen');
+const mountainId = url.searchParams.get('mountainId');
+
+if (formOpen === 'true') {
+  document.querySelector('.js-add-completed-climb-button').click();
+  document.querySelector('.js-mountain-dropdown').value = `${mountainId}`;
+}
+
 function renderCompletedClimbs() {
   let completedClimbsHTML = `
     <div class="add-completed-mountain-section">

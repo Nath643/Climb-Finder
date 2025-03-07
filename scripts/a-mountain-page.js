@@ -63,20 +63,20 @@ function renderAMountainPage() {
           <p>Total distance of the climb: ${matchingMountain.distance} miles</p>
         </div>
 
-        <button class="add-to-planned-climbs-button js-add-to-planned-climbs-button">Add to planned climbs</button>
-
-        <button class="add-to-completed-climbs-button js-add-to-completed-climbs-button">Add to completed climbs</button>
+        <a href="planned-climbs.html?formOpen=true&mountainId=${matchingMountain.id}">
+          <button class="add-to-planned-climbs-button js-add-to-planned-climbs-button">
+            Add to planned climbs
+          </button>
+        </a>
+        
+        <a href="completed-climbs.html?formOpen=true&mountainId=${matchingMountain.id}">
+          <button class="add-to-completed-climbs-button js-add-to-completed-climbs-button">
+            Add to completed climbs
+          </button>
+        </a>
       </div>
     </section>
   `;
 
   document.querySelector('.a-mountain-main').innerHTML = aMountainHTML;
-  
-  // document.querySelector('.js-add-to-planned-climbs-button').addEventListener('click', () => {
-  //   addClimb(matchingMountain.id, new Date());
-  // });
-
-  // document.querySelector('.js-add-to-completed-climbs-button').addEventListener('click', () => {
-  //   addCompletedClimb(matchingMountain.id);
-  // });
 }

@@ -23,6 +23,15 @@ function showItems(menuName) {
 
 renderPlannedClimbs();
 
+const url = new URL(window.location.href);
+const formOpen = url.searchParams.get('formOpen');
+const mountainId = url.searchParams.get('mountainId');
+
+if (formOpen === 'true') {
+  document.querySelector('.js-add-planned-climb-button').click();
+  document.querySelector('.js-mountain-dropdown').value = `${mountainId}`;
+}
+
 function renderPlannedClimbs() {
   let plannedClimbsHTML = `
     <div class="add-completed-mountain-section">
@@ -152,4 +161,3 @@ function renderPlannedClimbs() {
     document.querySelector('.js-buttons-container').classList.add('buttons-container');
   });
 }
-
