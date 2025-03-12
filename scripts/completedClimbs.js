@@ -33,6 +33,9 @@ if (formOpen === 'true') {
   document.querySelector('.js-mountain-dropdown').value = `${mountainId}`;
 }
 
+// const urlWithoutParams = window.location.origin + window.location.pathname;
+// window.history.replaceState({}, document.title, urlWithoutParams);
+
 function renderCompletedClimbs() {
   let completedClimbsHTML = `
     <div class="add-completed-mountain-section">
@@ -188,6 +191,8 @@ function renderCompletedClimbs() {
   });
 
   document.querySelector('.js-cancel-button').addEventListener('click', () => {
+    // document.querySelector('.js-mountain-dropdown').value = '';
+    
     document.querySelector('.js-add-completed-climb-button').classList.remove('climb-button-clicked');
     document.querySelector('.js-select-mountain').classList.add('select-mountain');
     document.querySelector('.js-select-date').classList.add('select-date');

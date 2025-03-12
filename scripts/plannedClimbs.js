@@ -155,6 +155,8 @@ function renderPlannedClimbs() {
   });
 
   document.querySelector('.js-cancel-button').addEventListener('click', () => {
+    // document.querySelector('.js-mountain-dropdown').value = '';
+
     document.querySelector('.js-add-planned-climb-button').classList.remove('climb-button-clicked');
     document.querySelector('.js-select-mountain').classList.add('select-mountain');
     document.querySelector('.js-select-date').classList.add('select-date');
