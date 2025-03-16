@@ -9,18 +9,18 @@ export function loadFromStorage() {
     profile = {
       age: 21,
       transport: [
-        'car',
-        'bike'
+        'Car',
+        'Bike'
       ],
       gear: [
-        "Waterproof coat",
-        "Walking boots",
+        "Waterproof-coat",
+        "Walking-boots",
         "GPS"
       ],
       fitness: 'intermediate',
       lookingFor: [
-        "exercise",
-        "views"
+        "Exercise",
+        "Views"
       ],
       totalDistance: 34,
       totalAltitude: 21
