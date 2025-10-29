@@ -1,0 +1,24 @@
+[
+  {
+    "mountainId": "helv",
+    "date": "2015-05-12",
+    "duration": "2 hours 30 minutes",
+    "weather": "clear",
+    "companions": [
+      "Luke", 
+      "Mike", 
+      "Jill" 
+    ]
+  },
+  {
+    "mountainId": "blen",
+    "date": "2016-06-08",
+    "duration": "3 hours 55 minutes",
+    "weather": "cloudy",
+    "companions": [
+      "Bill",
+      "Cindy", 
+      "John"
+    ]
+  }
+]
