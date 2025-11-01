@@ -1,9 +1,5 @@
 import { mountains, loadMountainsFetch } from "../data/mountains.js";
 
-console.log(mountains);
-await loadMountainsFetch();
-console.log(mountains);
-
 document.querySelector('.hamburger-menu-button').addEventListener('click', () => {
   showItems('.pages');
 });
@@ -23,9 +19,12 @@ function showItems(menuName) {
   }
 }
 
-renderRecommendedMountains();
+await renderRecommendedMountains();
 
-function renderRecommendedMountains() {
+async function renderRecommendedMountains() {
+  await loadMountainsFetch();
+  console.log(mountains);
+  
   let recommendedMountainsHTML = '';
 
   mountains.forEach((mountain) => {

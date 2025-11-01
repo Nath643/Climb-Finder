@@ -1,9 +1,5 @@
 import { mountains, loadMountainsFetch } from "../data/mountains.js";
 
-console.log(mountains);
-await loadMountainsFetch();
-console.log(mountains);
-
 document.querySelector('.hamburger-menu-button').addEventListener('click', () => {
   showItems('.pages');
 });
@@ -23,9 +19,12 @@ function showItems(menuName) {
   }
 }
 
-renderAMountainPage();
+await renderAMountainPage();
 
-function renderAMountainPage() {
+async function renderAMountainPage() {
+  await loadMountainsFetch();
+  console.log(mountains);
+
   const url = new URL(window.location.href);
   const mountainId = url.searchParams.get('mountainId');
 

@@ -1,14 +1,6 @@
 import { addPlannedClimb, plannedClimbs, loadPlannedClimbsFetch } from "../data/plannedClimbs.js";
 import { getMountain, mountains, loadMountainsFetch } from "../data/mountains.js";
 
-console.log(plannedClimbs);
-await loadPlannedClimbsFetch();
-console.log(plannedClimbs);
-
-console.log(mountains);
-await loadMountainsFetch();
-console.log(mountains);
-
 document.querySelector('.hamburger-menu-button').addEventListener('click', () => {
   showItems('.pages');
 });
@@ -28,7 +20,7 @@ function showItems(menuName) {
   }
 }
 
-renderPlannedClimbs();
+await renderPlannedClimbs();
 
 const url = new URL(window.location.href);
 const formOpen = url.searchParams.get('formOpen');
@@ -39,7 +31,15 @@ if (formOpen === 'true') {
   document.querySelector('.js-mountain-dropdown').value = `${mountainId}`;
 }
 
-function renderPlannedClimbs() {
+async function renderPlannedClimbs() {
+  console.log(plannedClimbs);
+  await loadPlannedClimbsFetch();
+  console.log(plannedClimbs);
+
+  console.log(mountains);
+  await loadMountainsFetch();
+  console.log(mountains);
+
   let plannedClimbsHTML = `
     <div class="add-completed-mountain-section">
       <div class="plus-container">
@@ -142,7 +142,7 @@ function renderPlannedClimbs() {
     document.querySelector('.js-buttons-container').classList.remove('buttons-container');
   });
 
-  document.querySelector('.js-submit-button').addEventListener('click', () => {
+  document.querySelector('.js-submit-button').addEventListener('click', async () => {
     const mountain = document.querySelector('.js-mountain-dropdown').value;
     const date = document.querySelector('.js-climb-date').value;
 
@@ -157,7 +157,7 @@ function renderPlannedClimbs() {
       document.querySelector('.js-select-date').classList.add('select-date');
       document.querySelector('.js-buttons-container').classList.add('buttons-container');
       
-      renderPlannedClimbs();
+      await renderPlannedClimbs();
     }
   });
 

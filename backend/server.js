@@ -49,10 +49,20 @@ async function getCompletedClimbs() {
   return rows;
 }
 
-(async () => {
-  const completedClimbs = await getCompletedClimbs();
-  // console.log(completedClimbs);
-})();
+async function getMountains() {
+  const [rows] = await pool.query('SELECT * FROM `mountains`');
+  return rows;
+}
+
+async function getPlannedClimbs() {
+  const [rows] = await pool.query('SELECT * FROM `plannedclimbs`');
+  return rows;
+}
+
+async function getProfile() {
+  const [rows] = await pool.query('SELECT * FROM `profile`');
+  return rows;
+}
 
 //MAYBE USEFUL AT SOME POINT: GET A SINGLE COMPLETED CLIMB:
 // Don't input mountainid directly with ${} as it is coming directly from a http request from a user - we can't trust it. The syntax used below is a prepared statement
@@ -65,11 +75,6 @@ async function getCompletedClimb(mountainId) {
   return rows[0];
 }
 
-(async () => {
-  const completedClimb = await getCompletedClimb('helv');
-  // console.log(completedClimb);
-})();
-
 // CREATE a completed climb
 async function createCompletedClimb(mountainId, date, duration, weather, companions) {
   const [result] = await pool.query(`
@@ -80,44 +85,42 @@ async function createCompletedClimb(mountainId, date, duration, weather, compani
   return getCompletedClimb(mountainId); // gets the first instance of the one with that mountain id, not the that was just created, you can alternatively just return all the arguments given to createCompletedClimb.
 }
 
-// (async () => {
-//   const createdCompletedClimb = await createCompletedClimb('scaf', '2019-06-21', '3 hours 15 minutes', 'overcast', 'Cindy');
-//   console.log(createdCompletedClimb);
-// })();
-
 // API routes
 app.get('/api/data', (req, res) => {
   res.json(data);
 });
 
 app.get('/api/completedClimbs', async (req, res) => {
-  // const data = JSON.parse(fs.readFileSync('completed-climbs.json'));
-  // res.json(data);
   const completedClimbsResult = await getCompletedClimbs();
   res.send(completedClimbsResult);
 });
 
-app.get('/api/mountains', (req, res) => {
-  const data = JSON.parse(fs.readFileSync('mountains.json'));
-  res.json(data);
+app.get('/api/mountains', async (req, res) => {
+  const mountainsResult = await getMountains();
+  res.send(mountainsResult);
 });
 
-app.get('/api/plannedClimbs', (req, res) => {
-  const data = JSON.parse(fs.readFileSync('planned-climbs.json'));
-  res.json(data);
+app.get('/api/plannedClimbs', async (req, res) => {
+  const plannedClimbsResult = await getPlannedClimbs();
+  res.send(plannedClimbsResult);
 });
 
-app.get('/api/profile', (req, res) => {
-  const data = JSON.parse(fs.readFileSync('profile.json'));
-  res.json(data);
+app.get('/api/profile', async (req, res) => {
+  const profileResult = await getProfile();
+  res.send(profileResult);
 });
 
-app.post('/api/data', (req, res) => {
-  const item = req.body;
-  data.push(item);
-  fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
-  res.status(201).json(item);
-});
+// (async () => {
+//   const profileResult = await getProfile();
+//   console.log(profileResult[0].transport);
+// })();
+
+// app.post('/api/data', (req, res) => {
+//   const item = req.body;
+//   data.push(item);
+//   fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
+//   res.status(201).json(item);
+// });
 
 app.post('/api/completedClimb', async (req, res) => {
   const {mountainId, date, duration, weather, companions} = req.body;

@@ -1,9 +1,5 @@
 import { profile, loadProfileFetch, } from "../data/profile.js";
 
-console.log(profile);
-await loadProfileFetch();
-console.log(profile);
-
 document.querySelector('.hamburger-menu-button').addEventListener('click', () => {
   showItems('.pages');
 });
@@ -23,9 +19,12 @@ function showItems(menuName) {
   }
 }
 
-renderProfilePage();
+await renderProfilePage();
 
-function renderProfilePage() {
+async function renderProfilePage() {
+  await loadProfileFetch();
+  console.log(profile);
+
   let profileHTML = `
     <div class="age-container profile-grid-subcontainer">
       <h3>Your age: ${profile.age}</h3>
@@ -81,6 +80,7 @@ function renderProfilePage() {
 
   function renderTransport() {
     let html = '';
+    console.log(profile.transport);
 
     profile.transport.forEach((transportMethod) => {
       let transportMethodClassName = transportMethod;
@@ -135,7 +135,7 @@ function renderProfilePage() {
     button.addEventListener('click', () => {
       let transportArray = profile.transport;
 
-      transportArray.forEach((transportItem) => {
+      transportArray.forEach(async (transportItem) => {
         if (button.classList.contains(`js-transport-delete-button-${transportItem}`)) {
           let index = transportArray.indexOf(`${transportItem}`);
 
@@ -143,7 +143,7 @@ function renderProfilePage() {
           if (index !== -1) {
             transportArray.splice(index, 1);
             saveToStorage();
-            renderProfilePage();
+            await renderProfilePage();
           }
         }
       });
@@ -155,7 +155,7 @@ function renderProfilePage() {
     button.addEventListener('click', () => {
       let lookingForArray = profile.lookingFor;
 
-      lookingForArray.forEach((lookingForItem) => {
+      lookingForArray.forEach(async (lookingForItem) => {
         if (button.classList.contains(`js-looking-for-delete-button-${lookingForItem}`)) {
           let index = lookingForArray.indexOf(`${lookingForItem}`);
 
@@ -163,7 +163,7 @@ function renderProfilePage() {
           if (index !== -1) {
             lookingForArray.splice(index, 1);
             saveToStorage();
-            renderProfilePage();
+            await renderProfilePage();
           }
         }
       });
@@ -176,7 +176,7 @@ function renderProfilePage() {
       let gearArray = profile.gear;
       console.log(button.classList);
 
-      gearArray.forEach((gearItem) => {
+      gearArray.forEach(async (gearItem) => {
         console.log(gearItem);
         if (button.classList.contains(`js-gear-delete-button-${gearItem}`)) {
           let index = gearArray.indexOf(`${gearItem}`);
@@ -185,7 +185,7 @@ function renderProfilePage() {
           if (index !== -1) {
             gearArray.splice(index, 1);
             saveToStorage();
-            renderProfilePage();
+            await renderProfilePage();
           }
         }
       });
@@ -208,47 +208,47 @@ function renderProfilePage() {
   // });
 
   let ageSubmitButton = document.querySelector('.js-age-submit-button');
-  ageSubmitButton.addEventListener('click', () => {
+  ageSubmitButton.addEventListener('click', async () => {
     let ageInput = document.querySelector('.js-age-input').value.trim();
 
     if (ageInput !== '' && !isNaN(ageInput) && ageInput > 0 && ageInput < 150) {
       profile.age = Number(ageInput);
       saveToStorage();
-      renderProfilePage();
+      await renderProfilePage();
     }
   });
 
   let transportSubmitButton = document.querySelector('.js-transport-submit-button');
-  transportSubmitButton.addEventListener('click', () => {
+  transportSubmitButton.addEventListener('click', async () => {
     let transportInput = document.querySelector('.js-transport-input').value.trim();
     if (transportInput !== '') {
       // convert spaces to dashes for consistent class names
       let transportItem = transportInput.replace(/\s+/g, '-').toLowerCase();
       profile.transport.push(transportItem);
       saveToStorage();
-      renderProfilePage();
+      await renderProfilePage();
     }
   });
 
   let lookingForSubmitButton = document.querySelector('.js-looking-for-submit-button');
-  lookingForSubmitButton.addEventListener('click', () => {
+  lookingForSubmitButton.addEventListener('click', async () => {
     let lookingForInput = document.querySelector('.js-looking-for-input').value.trim();
     if (lookingForInput !== '') {
       let lookingForItem = lookingForInput.replace(/\s+/g, '-').toLowerCase();
       profile.lookingFor.push(lookingForItem);
       saveToStorage();
-      renderProfilePage();
+      await renderProfilePage();
     }
   });
 
   let gearSubmitButton = document.querySelector('.js-gear-submit-button');
-  gearSubmitButton.addEventListener('click', () => {
+  gearSubmitButton.addEventListener('click', async () => {
     let gearInput = document.querySelector('.js-gear-input').value.trim();
     if (gearInput !== '') {
       let gearItem = gearInput.replace(/\s+/g, '-').toLowerCase();
       profile.gear.push(gearItem);
       saveToStorage();
-      renderProfilePage();
+      await renderProfilePage();
     }
   });
 }

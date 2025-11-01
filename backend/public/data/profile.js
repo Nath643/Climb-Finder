@@ -5,8 +5,7 @@ export let profile = {};
 export async function loadProfileFetch() {
   const response = await fetch('http://localhost:3000/api/profile');
   const data = await response.json();
-  // mutate the existing object
-  Object.assign(profile, data);
+  Object.assign(profile, Array.isArray(data) ? data[0] : data);
   return profile;
 }
 

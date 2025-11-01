@@ -204,7 +204,7 @@ function showItems(menuName) {
   }
 }
 
-renderCompletedClimbs();
+await renderCompletedClimbs();
 
 const url = new URL(window.location.href);
 const formOpen = url.searchParams.get('formOpen');
