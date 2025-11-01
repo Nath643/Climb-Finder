@@ -185,14 +185,6 @@ import { addCompletedClimb, loadCompletedClimbsFetch, completedClimbs } from "..
 import { formatDate } from "../utils/formatDate.js";
 import { getMountain, mountains, loadMountainsFetch } from "../data/mountains.js";
 
-console.log(completedClimbs);
-await loadCompletedClimbsFetch();
-console.log(completedClimbs);
-
-console.log(mountains);
-await loadMountainsFetch();
-console.log(mountains);
-
 document.querySelector('.hamburger-menu-button').addEventListener('click', () => {
   showItems('.pages');
 });
@@ -226,7 +218,15 @@ if (formOpen === 'true') {
 // const urlWithoutParams = window.location.origin + window.location.pathname;
 // window.history.replaceState({}, document.title, urlWithoutParams);
 
-function renderCompletedClimbs() {
+async function renderCompletedClimbs() {
+  console.log(completedClimbs);
+  await loadCompletedClimbsFetch();
+  console.log(completedClimbs);
+
+  console.log(mountains);
+  await loadMountainsFetch();
+  console.log(mountains);
+
   let completedClimbsHTML = `
     <div class="add-completed-mountain-section">
       <div class="plus-container">
@@ -357,7 +357,7 @@ function renderCompletedClimbs() {
     document.querySelector('.js-buttons-container').classList.remove('buttons-container');
   });
 
-  document.querySelector('.js-submit-button').addEventListener('click', () => {
+  document.querySelector('.js-submit-button').addEventListener('click', async () => {
     const mountain = document.querySelector('.js-mountain-dropdown').value;
     const date = document.querySelector('.js-climb-date').value;
     const durationHours = document.querySelector('.js-duration-hours').value;
@@ -369,7 +369,7 @@ function renderCompletedClimbs() {
       alert("Please fill out fields");
     }
     else {
-      addCompletedClimb(mountain, date, durationHours, durationMins, weather, companions);
+      await addCompletedClimb(mountain, date, durationHours, durationMins, weather, companions);
 
       document.querySelector('.js-add-completed-climb-button').classList.remove('climb-button-clicked');
       document.querySelector('.js-select-mountain').classList.add('select-mountain');
@@ -379,7 +379,7 @@ function renderCompletedClimbs() {
       document.querySelector('.js-select-weather-conditions').classList.add('select-weather-conditions');
       document.querySelector('.js-buttons-container').classList.add('buttons-container');
       
-      renderCompletedClimbs();
+      await renderCompletedClimbs();
     }
   });
 
