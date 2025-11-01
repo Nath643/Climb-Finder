@@ -28,7 +28,7 @@ async function renderRecommendedMountains() {
   let recommendedMountainsHTML = '';
 
   mountains.forEach((mountain) => {
-    const mountainId = mountain.id;
+    const mountainId = mountain.mountainId;
     const mountainName = mountain.name;
     const mountainImage = mountain.image;
     const mountainMap = mountain.mapEmbed;

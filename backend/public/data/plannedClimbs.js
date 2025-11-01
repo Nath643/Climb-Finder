@@ -19,15 +19,28 @@
 //   localStorage.setItem('plannedClimbs', JSON.stringify(plannedClimbs));
 // }
 
-export function addPlannedClimb(mountainId, date) {
-  // in time, I'll add to the array in a position according to the date.
+// export function addPlannedClimb(mountainId, date) {
+//   // in time, I'll add to the array in a position according to the date.
 
-  plannedClimbs.unshift({
-    mountainId,
-    date
+//   plannedClimbs.unshift({
+//     mountainId,
+//     date
+//   });
+
+//   // saveToStorage();
+// }
+
+export async function addPlannedClimb(mountain, date) {
+  const response = await fetch('http://localhost:3000/api/plannedClimb', {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json'
+    },
+    body: JSON.stringify({
+      mountainId: mountain,
+      date, 
+    })
   });
-
-  // saveToStorage();
 }
 
 export let plannedClimbs = [];

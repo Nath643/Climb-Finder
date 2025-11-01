@@ -73,7 +73,7 @@ async function renderPlannedClimbs() {
     let html = '<option value="" disabled selected>Select an option</option>';
 
     mountains.forEach((mountain) => {
-      html += `<option value="${mountain.id}">${mountain.name}</option>`;
+      html += `<option value="${mountain.mountainId}">${mountain.name}</option>`;
     });
 
     return html;
@@ -99,7 +99,7 @@ async function renderPlannedClimbs() {
             <p>Total distance of the climb: ${mountain.distance} miles</p>
 
             <div class="more-info-button-container">
-              <a href="a-mountain-page.html?mountainId=${mountain.id}">
+              <a href="a-mountain-page.html?mountainId=${mountain.mountainId}">
                 <button class="more-info-button">More Info About This Mountain</button>
               </a>
             </div>

@@ -44,6 +44,7 @@ const pool = mysql.createPool({
   database: process.env.MYSQL_DATABASE
 }).promise();
 
+// Get data
 async function getCompletedClimbs() {
   const [rows] = await pool.query('SELECT * FROM `completedclimbs`');
   return rows;
@@ -64,12 +65,21 @@ async function getProfile() {
   return rows;
 }
 
-//MAYBE USEFUL AT SOME POINT: GET A SINGLE COMPLETED CLIMB:
 // Don't input mountainid directly with ${} as it is coming directly from a http request from a user - we can't trust it. The syntax used below is a prepared statement
+
 async function getCompletedClimb(mountainId) {
   const [rows] = await pool.query(`
     SELECT * 
     FROM completedclimbs
+    WHERE mountainId = ?
+    `, [mountainId]);
+  return rows[0];
+}
+
+async function getPlannedClimb(mountainId) {
+  const [rows] = await pool.query(`
+    SELECT * 
+    FROM plannedclimbs
     WHERE mountainId = ?
     `, [mountainId]);
   return rows[0];
@@ -83,6 +93,16 @@ async function createCompletedClimb(mountainId, date, duration, weather, compani
   `, [mountainId, date, duration, weather, companions])
   const id = result.insertId
   return getCompletedClimb(mountainId); // gets the first instance of the one with that mountain id, not the that was just created, you can alternatively just return all the arguments given to createCompletedClimb.
+}
+
+// CREATE a planned climb
+async function createPlannedClimb(mountainId, date) {
+  const [result] = await pool.query(`
+    INSERT INTO plannedclimbs (mountainId, date)
+    VALUES (?, ?)
+  `, [mountainId, date])
+  const id = result.insertId
+  return getPlannedClimb(mountainId); // gets the first instance of the one with that mountain id, not the that was just created, you can alternatively just return all the arguments given to createCompletedClimb.
 }
 
 // API routes
@@ -128,6 +148,15 @@ app.post('/api/completedClimb', async (req, res) => {
   (async () => {
     const createdCompletedClimb = await createCompletedClimb(mountainId, date, duration, weather, companions);
     res.status(201).send(createdCompletedClimb);
+  })();
+});
+
+app.post('/api/plannedClimb', async (req, res) => {
+  const {mountainId, date} = req.body;
+
+  (async () => {
+    const createdPlannedClimb = await createPlannedClimb(mountainId, date);
+    res.status(201).send(createdPlannedClimb);
   })();
 });
 

@@ -30,8 +30,6 @@ export async function addCompletedClimb(mountain, date, durationHours, durationM
       companions
     })
   });
-
-  
 }
 
 // get the data from our backend:

@@ -21,7 +21,8 @@ VALUES
 
 -- Create planned climbs table
 CREATE TABLE IF NOT EXISTS `plannedclimbs` (
-    mountainId VARCHAR(50) PRIMARY KEY,                  
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    mountainId VARCHAR(50),                  
     date VARCHAR(50)                                     
 );
 
@@ -35,7 +36,8 @@ INSERT INTO `plannedclimbs` (
 
 -- create profile table
 CREATE TABLE IF NOT EXISTS `profile` (
-    age INT PRIMARY KEY,                             
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    age INT,                             
     transport JSON,                      
     gear JSON,                           
     fitness VARCHAR(50),                 
@@ -64,7 +66,8 @@ INSERT INTO `profile` (
 
 -- Create mountains table
 CREATE TABLE IF NOT EXISTS `mountains` (
-    id VARCHAR(50) PRIMARY KEY,                  
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    mountainId VARCHAR(50),                  
     name VARCHAR(100),                           
     image VARCHAR(255),                          
     mapImage VARCHAR(255),                       
@@ -79,7 +82,7 @@ CREATE TABLE IF NOT EXISTS `mountains` (
 );
 
 INSERT INTO `mountains` (
-    id,
+    mountainId,
     name,
     image,
     mapImage,
@@ -107,7 +110,7 @@ INSERT INTO `mountains` (
 );
 
 INSERT INTO `mountains` (
-    id,
+    mountainId,
     name,
     image,
     mapImage,
@@ -135,7 +138,7 @@ INSERT INTO `mountains` (
 );
 
 INSERT INTO `mountains` (
-    id,
+    mountainId,
     name,
     image,
     mapImage,
@@ -163,7 +166,7 @@ INSERT INTO `mountains` (
 );
 
 INSERT INTO `mountains` (
-    id,
+    mountainId,
     name,
     image,
     mapImage,
@@ -191,7 +194,7 @@ INSERT INTO `mountains` (
 );
 
 INSERT INTO `mountains` (
-    id,
+    mountainId,
     name,
     image,
     mapImage,
@@ -219,7 +222,7 @@ INSERT INTO `mountains` (
 );
 
 INSERT INTO `mountains` (
-    id,
+    mountainId,
     name,
     image,
     mapImage,
