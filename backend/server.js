@@ -61,8 +61,15 @@ async function getPlannedClimbs() {
 }
 
 async function getProfile() {
-  const [rows] = await pool.query('SELECT * FROM `profile`');
-  return rows;
+  const [rows] = await pool.query('SELECT * FROM `profile` WHERE id = 1');
+  const profile = rows[0];
+
+  // Parse all array fields safely
+  if (profile.gear && typeof profile.gear === 'string') profile.gear = JSON.parse(profile.gear);
+  if (profile.transport && typeof profile.transport === 'string') profile.transport = JSON.parse(profile.transport);
+  if (profile.lookingFor && typeof profile.lookingFor === 'string') profile.lookingFor = JSON.parse(profile.lookingFor);
+
+  return profile;
 }
 
 // Don't input mountainid directly with ${} as it is coming directly from a http request from a user - we can't trust it. The syntax used below is a prepared statement
@@ -105,6 +112,16 @@ async function createPlannedClimb(mountainId, date) {
   return getPlannedClimb(mountainId); // gets the first instance of the one with that mountain id, not the that was just created, you can alternatively just return all the arguments given to createCompletedClimb.
 }
 
+async function updateProfile(age, transport, gear, fitness, lookingFor, totalDistance, totalAltitude) {
+  const [result] = await pool.query(`
+    UPDATE profile
+    SET age = ?, transport = ?, gear = ?, fitness = ?, lookingFor = ?, totalDistance = ?, totalAltitude = ?
+    WHERE id = 1
+  `, [age, transport, gear, fitness, lookingFor, totalDistance, totalAltitude]);
+  // const id = result.insertId
+  return getProfile();
+}
+
 // API routes
 app.get('/api/data', (req, res) => {
   res.json(data);
@@ -130,6 +147,18 @@ app.get('/api/profile', async (req, res) => {
   res.send(profileResult);
 });
 
+app.put('/api/profile', async (req, res) => {
+  console.log(req.body);
+  const {age, transport, gear, fitness, lookingFor, totalDistance, totalAltitude} = req.body;
+
+  const gearJson = Array.isArray(gear) ? JSON.stringify(gear) : gear;
+  const transportJson = Array.isArray(transport) ? JSON.stringify(transport) : transport;
+  const lookingForJson = Array.isArray(lookingFor) ? JSON.stringify(lookingFor) : lookingFor;
+
+  const updatedProfile = await updateProfile(age, transportJson, gearJson, fitness, lookingForJson, totalDistance, totalAltitude);
+  res.json(updatedProfile);
+});
+
 // (async () => {
 //   const profileResult = await getProfile();
 //   console.log(profileResult[0].transport);
@@ -144,7 +173,7 @@ app.get('/api/profile', async (req, res) => {
 
 app.post('/api/completedClimb', async (req, res) => {
   const {mountainId, date, duration, weather, companions} = req.body;
-
+  // ASYNC MAYBE NOT NECESSARY
   (async () => {
     const createdCompletedClimb = await createCompletedClimb(mountainId, date, duration, weather, companions);
     res.status(201).send(createdCompletedClimb);

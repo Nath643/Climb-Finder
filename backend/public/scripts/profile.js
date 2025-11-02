@@ -1,4 +1,4 @@
-import { profile, loadProfileFetch, } from "../data/profile.js";
+import { profile, loadProfileFetch, updateProfile } from "../data/profile.js";
 
 document.querySelector('.hamburger-menu-button').addEventListener('click', () => {
   showItems('.pages');
@@ -142,7 +142,7 @@ async function renderProfilePage() {
           // we check if index is = -1, because if the item is not found in the array, and we try to remove the item at index -1, it wraps around and removes the last item in the array:
           if (index !== -1) {
             transportArray.splice(index, 1);
-            saveToStorage();
+            await updateProfile(profile);
             await renderProfilePage();
           }
         }
@@ -162,7 +162,7 @@ async function renderProfilePage() {
           // we check if index is = -1, because if the item is not found in the array, and we try to remove the item at index -1, it wraps around and removes the last item in the array:
           if (index !== -1) {
             lookingForArray.splice(index, 1);
-            saveToStorage();
+            await updateProfile(profile);
             await renderProfilePage();
           }
         }
@@ -184,7 +184,7 @@ async function renderProfilePage() {
           // we check if index is = -1, because if the item is not found in the array, and we try to remove the item at index -1, it wraps around and removes the last item in the array:
           if (index !== -1) {
             gearArray.splice(index, 1);
-            saveToStorage();
+            await updateProfile(profile);
             await renderProfilePage();
           }
         }
@@ -192,28 +192,14 @@ async function renderProfilePage() {
     });
   });
   
-  // Handle when the submit buttons are clicked:
-
-  // let ageSubmitButton = document.querySelector('.js-age-submit-button')
-  // ageSubmitButton.addEventListener('click', () => {
-  //   let ageInputValue = document.querySelector('.js-age-input').value;
-  //   if (ageInputValue > 0 && ageInputValue < 150) {
-  //     profile.age = ageInputValue;
-  //     saveToStorage();
-  //     renderProfilePage();
-  //   }
-  //   else {
-  //     return;
-  //   }
-  // });
-
   let ageSubmitButton = document.querySelector('.js-age-submit-button');
   ageSubmitButton.addEventListener('click', async () => {
     let ageInput = document.querySelector('.js-age-input').value.trim();
 
     if (ageInput !== '' && !isNaN(ageInput) && ageInput > 0 && ageInput < 150) {
       profile.age = Number(ageInput);
-      saveToStorage();
+      console.log(profile);
+      await updateProfile(profile);
       await renderProfilePage();
     }
   });
@@ -225,7 +211,7 @@ async function renderProfilePage() {
       // convert spaces to dashes for consistent class names
       let transportItem = transportInput.replace(/\s+/g, '-').toLowerCase();
       profile.transport.push(transportItem);
-      saveToStorage();
+      await updateProfile(profile);
       await renderProfilePage();
     }
   });
@@ -236,7 +222,7 @@ async function renderProfilePage() {
     if (lookingForInput !== '') {
       let lookingForItem = lookingForInput.replace(/\s+/g, '-').toLowerCase();
       profile.lookingFor.push(lookingForItem);
-      saveToStorage();
+      await updateProfile(profile);
       await renderProfilePage();
     }
   });
@@ -247,8 +233,37 @@ async function renderProfilePage() {
     if (gearInput !== '') {
       let gearItem = gearInput.replace(/\s+/g, '-').toLowerCase();
       profile.gear.push(gearItem);
-      saveToStorage();
+      await updateProfile(profile);
       await renderProfilePage();
     }
+  });
+
+
+  let beginnerButton = document.querySelector('.js-beginner-fitness-button');
+  beginnerButton.addEventListener('click', async() => {
+    profile.fitness = 'beginner';
+    await updateProfile(profile);
+    await renderProfilePage();
+  });
+
+  let intermediateButton = document.querySelector('.js-intermediate-fitness-button');
+  intermediateButton.addEventListener('click', async() => {
+    profile.fitness = 'intermediate';
+    await updateProfile(profile);
+    await renderProfilePage();
+  });
+
+  let strongButton = document.querySelector('.js-strong-fitness-button');
+  strongButton.addEventListener('click', async() => {
+    profile.fitness = 'strong';
+    await updateProfile(profile);
+    await renderProfilePage();
+  });
+
+  let athleteButton = document.querySelector('.js-athlete-fitness-button');
+  athleteButton.addEventListener('click', async() => {
+    profile.fitness = 'athlete';
+    await updateProfile(profile);
+    await renderProfilePage();
   });
 }
