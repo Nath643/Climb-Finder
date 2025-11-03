@@ -69,8 +69,8 @@ CREATE TABLE IF NOT EXISTS `mountains` (
     id INT AUTO_INCREMENT PRIMARY KEY,
     mountainId VARCHAR(50),                  
     name VARCHAR(100),                           
-    image VARCHAR(255),                          
-    mapImage VARCHAR(255),                       
+    image TEXT,                          
+    mapImage TEXT,                       
     height INT,                                  
     difficulty VARCHAR(50),                      
     views TEXT,                                  
@@ -135,22 +135,8 @@ INSERT INTO `mountains` (
     JSON_ARRAY('Warm waterproof coat', 'Plenty of water', 'Comfortable walking shoes'),
     'intermediate',
     'car'
-);
-
-INSERT INTO `mountains` (
-    mountainId,
-    name,
-    image,
-    mapImage,
-    height,
-    difficulty,
-    views,
-    distance,
-    mapEmbed,
-    recommendedGear,
-    recommendedFitness,
-    recommendedTransport
-) VALUES (
+),
+(
     'scaf',
     'Scafell Pike',
     'mountain-images/scafell-pike.jpg',
@@ -163,22 +149,8 @@ INSERT INTO `mountains` (
     JSON_ARRAY('Warm waterproof coat', 'Plenty of water', 'Comfortable walking shoes', 'Walking sticks'),
     'intermediate-strong',
     'car'
-);
-
-INSERT INTO `mountains` (
-    mountainId,
-    name,
-    image,
-    mapImage,
-    height,
-    difficulty,
-    views,
-    distance,
-    mapEmbed,
-    recommendedGear,
-    recommendedFitness,
-    recommendedTransport
-) VALUES (
+),
+(
     'benn',
     'Ben Nevis',
     'mountain-images/ben-nevis.jpg',
@@ -191,22 +163,8 @@ INSERT INTO `mountains` (
     JSON_ARRAY('Warm waterproof coat', 'Plenty of water', 'Food', 'Comfortable walking shoes', 'Walking sticks'),
     'strong',
     'car'
-);
-
-INSERT INTO `mountains` (
-    mountainId,
-    name,
-    image,
-    mapImage,
-    height,
-    difficulty,
-    views,
-    distance,
-    mapEmbed,
-    recommendedGear,
-    recommendedFitness,
-    recommendedTransport
-) VALUES (
+),
+(
     'cair',
     'Cairn Gorm',
     'mountain-images/cairn-gorm.jpg',
@@ -219,22 +177,8 @@ INSERT INTO `mountains` (
     JSON_ARRAY('Warm waterproof coat', 'Plenty of water', 'Food', 'Comfortable walking shoes', 'Walking sticks'),
     'intermediate-strong',
     'car'
-);
-
-INSERT INTO `mountains` (
-    mountainId,
-    name,
-    image,
-    mapImage,
-    height,
-    difficulty,
-    views,
-    distance,
-    mapEmbed,
-    recommendedGear,
-    recommendedFitness,
-    recommendedTransport
-) VALUES (
+),
+(
     'snow',
     'Snowdon',
     'mountain-images/snowdon.jpg',

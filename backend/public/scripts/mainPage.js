@@ -39,7 +39,7 @@ async function renderRecommendedMountains() {
     recommendedMountainsHTML += `
       <div class="recommended-mountain-section">
         <div class="mountain-image-container">
-          <img src="${mountainImage}" alt="photo of ${mountainName} mountain." class="mountain-image">
+          <img src="${mountainImage}" alt="photo of ${mountainName}" class="mountain-image">
         </div>
 
         <div class="map">

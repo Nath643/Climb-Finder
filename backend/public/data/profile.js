@@ -1,4 +1,6 @@
 //GIT.!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// ADD ROUGH USER LOCATION FOR PROFILE TO DETERMINE RECOMMENDED MODES OF TRANSPORT
+// MAKE A LOGIN
 
 export let profile = {};
 
