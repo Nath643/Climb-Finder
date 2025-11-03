@@ -1,4 +1,4 @@
-import { addPlannedClimb, plannedClimbs, loadPlannedClimbsFetch } from "../data/plannedClimbs.js";
+import { addPlannedClimb, deleteplannedClimb, plannedClimbs, loadPlannedClimbsFetch } from "../data/plannedClimbs.js";
 import { getMountain, mountains, loadMountainsFetch } from "../data/mountains.js";
 
 document.querySelector('.hamburger-menu-button').addEventListener('click', () => {
@@ -84,6 +84,10 @@ async function renderPlannedClimbs() {
 
     plannedClimbsHTML += `
       <div class="planned-climb-section">
+        <div class="delete-planned-climb-button-container">
+          <button class="delete-planned-climb-button js-delete-planned-climb-button js-delete-planned-climb-button-${plannedClimb.id}">x</button>
+        </div>
+
         <div class="mountain-image-container">
           <img src="${mountain.image}" alt="photo of ${mountain.name} mountain." class="mountain-image">
         </div>
@@ -169,4 +173,23 @@ async function renderPlannedClimbs() {
     document.querySelector('.js-select-date').classList.add('select-date');
     document.querySelector('.js-buttons-container').classList.add('buttons-container');
   });
+
+  let deleteButtons = document.querySelectorAll('.js-delete-planned-climb-button');
+    deleteButtons.forEach((button) => {
+      button.addEventListener('click', async () => {
+  
+        // Extract climb ID from class name
+        const idClass = Array.from(button.classList).find(cls => 
+          cls.startsWith('js-delete-planned-climb-button-')
+        );
+        if (!idClass) return;
+        const climbId = idClass.split('-').pop();
+  
+        const climb = plannedClimbs.find(climb => climb.id == climbId);
+        console.log(climb);
+  
+        await deleteplannedClimb(climb);
+        await renderPlannedClimbs();
+      });
+    });
 }

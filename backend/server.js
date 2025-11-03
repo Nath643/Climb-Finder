@@ -159,18 +159,6 @@ app.put('/api/profile', async (req, res) => {
   res.json(updatedProfile);
 });
 
-// (async () => {
-//   const profileResult = await getProfile();
-//   console.log(profileResult[0].transport);
-// })();
-
-// app.post('/api/data', (req, res) => {
-//   const item = req.body;
-//   data.push(item);
-//   fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
-//   res.status(201).json(item);
-// });
-
 app.post('/api/completedClimb', async (req, res) => {
   const {mountainId, date, duration, weather, companions} = req.body;
   // ASYNC MAYBE NOT NECESSARY
@@ -187,6 +175,22 @@ app.post('/api/plannedClimb', async (req, res) => {
     const createdPlannedClimb = await createPlannedClimb(mountainId, date);
     res.status(201).send(createdPlannedClimb);
   })();
+});
+
+app.delete('/api/completedClimb', async (req, res) => {
+  const {id} = req.body; 
+
+  await pool.query(`DELETE FROM completedClimbs WHERE id = ?`, [id]);
+
+  res.json({ success: true });
+});
+
+app.delete('/api/plannedClimb', async (req, res) => {
+  const {id} = req.body; 
+
+  await pool.query(`DELETE FROM plannedClimbs WHERE id = ?`, [id]);
+
+  res.json({ success: true });
 });
 
 // For any other route, serve index.html (supports SPA routing)

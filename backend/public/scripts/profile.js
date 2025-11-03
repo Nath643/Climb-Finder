@@ -30,7 +30,6 @@ async function renderProfilePage() {
       <h3>Your age: ${profile.age}</h3>
       <input type="number" class="age-input js-age-input" />
       <button class="js-age-submit-button">Submit</button>
-      <!--<button>Change your age</button>-->
     </div>
 
     <div class="fitness-container profile-grid-subcontainer">
@@ -74,7 +73,7 @@ async function renderProfilePage() {
 
     <div class="stats-container profile-grid-subcontainer">
       <h3>Total distance completed: ${profile.totalDistance} miles</h3>
-      <h3>Total altitude climbed: ${profile.totalAltitude} miles</h3>
+      <h3>Total altitude climbed: ${profile.totalAltitude} metres</h3>
     </div>
   `;
 

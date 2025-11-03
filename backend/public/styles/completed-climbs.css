@@ -84,18 +84,29 @@ body {
   /* background-color: white; */
 }
 
-.green-circle-container {
+.delete-completed-climb-button-container {
   position: relative;
 }
 
-.green-circle {
+.delete-completed-climb-button {
   position: absolute;
   top: 77.5px;
   left: 81.8px;
-  background-color: rgb(67, 211, 67);
+  background-color: rgb(255, 47, 47);
+  color: rgb(230, 230, 230);
+  font-weight: bold;
+  font-size: 30px;
   height: 50px;
   width: 50px;
   border-radius: 25px;
+  cursor: pointer;
+  border: none;
+  transition: 0.2s;
+}
+
+.delete-completed-climb-button:hover {
+  background-color: rgba(255, 47, 47, 0.567);
+  color: rgb(105, 105, 105);
 }
 
 .mountain-image {

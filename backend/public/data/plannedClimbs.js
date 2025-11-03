@@ -43,6 +43,16 @@ export async function addPlannedClimb(mountain, date) {
   });
 }
 
+export async function deleteplannedClimb(plannedClimb) {
+  const response = await fetch('http://localhost:3000/api/plannedClimb', {
+    method: 'DELETE',
+    headers: {
+      'content-type': 'application/json'
+    },
+    body: JSON.stringify(plannedClimb)
+  });
+}
+
 export let plannedClimbs = [];
 
 export async function loadPlannedClimbsFetch() {
