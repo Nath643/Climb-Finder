@@ -154,7 +154,7 @@ async function renderPlannedClimbs() {
       alert("Please fill out fields");
     }
     else {
-      addPlannedClimb(mountain, date);
+      await addPlannedClimb(mountain, date);
 
       document.querySelector('.js-add-planned-climb-button').classList.remove('climb-button-clicked');
       document.querySelector('.js-select-mountain').classList.add('select-mountain');
