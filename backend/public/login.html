@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Climb Finder</title>
+
+    <link rel="stylesheet" href="styles/recommended-climbs.css">
+    <link rel="stylesheet" href="styles/header.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;700;800;900&display=swap" rel="stylesheet">
+  </head>
+
+  <body>
+    <header>
+      <nav>
+        <button class="hamburger-menu-button">
+          
+        </button>
+
+        <div class="pages">
+          
+        </div>
+      </nav>
+
+      <div class="logo">
+        <h1>Climb Finder</h1>
+      </div>
+
+      <div class="country">
+        <button class="country-button">
+          <p>UK</p>
+        </button>
+        <div class="countries">
+
+        </div>
+          <!-- later on, save a bunch of countries in js (data)-maybe from a backend? then render these buttons from the data, then loop through them and add event listeners to make interactive - i.e. when you click it changes country displayed on page and what is in local storage -->
+      </div>
+    </header>
+
+    <main>
+      <section class="page-title">
+        <h2>Login Page</h2>
+      </section>
+
+      <section class="login-grid">
+        <input type="number" class="js-id-input">
+        <form action="/login" method="POST">
+          <button type="submit" class="js-login-button">Login</a>
+        </form>
+      </section>
+    </main>
+
+    <script type="module" src="scripts/login.js"></script>
+  </body>
+</html>

@@ -16,6 +16,9 @@ const fs = require('fs');
 const path = require('path');
 const mysql = require('mysql2');
 const dotenv = require('dotenv');
+const session = require('express-session');
+const bcrypt = require('bcrypt');
+const cookieParser = require('cookie-parser');
 dotenv.config();
 
 const app = express();
@@ -23,18 +26,36 @@ const PORT = 3000;
 
 // Middleware to parse JSON requests
 app.use(express.json());
+console.log(__dirname);
+
+// middleware?
+app.use(express.urlencoded({ extended: true }));
+
+app.get('/', (req, res) => {
+  res.sendFile((path.join(__dirname, 'public', 'login.html')));
+});
 
 // Serve frontend files from 'public' folder
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Path to JSON file for storing data
-const DATA_FILE = path.join(__dirname, 'data.json');
+// app.get('/', (req, res) => {
+//   res.redirect('/index.html');  // ← Server redirect: forces URL to /index.html
+// });
 
-// Load or initialize data
-let data = [];
-if (fs.existsSync(DATA_FILE)) {
-  data = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
-}
+// app.get('/index.html', (req, res) => res.sendFile(__dirname + '/index.html'));
+
+app.get('/index.html', (req, res) => {
+  res.sendFile((path.join(__dirname, 'public', 'index.html')));
+});
+
+// // Path to JSON file for storing data
+// const DATA_FILE = path.join(__dirname, 'data.json');
+
+// // Load or initialize data
+// let data = [];
+// if (fs.existsSync(DATA_FILE)) {
+//   data = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
+// }
 
 // Connect to database
 const pool = mysql.createPool({
@@ -122,6 +143,27 @@ async function updateProfile(age, transport, gear, fitness, lookingFor, totalDis
   return getProfile();
 }
 
+// LOGIN / OUT API routes
+// app.get("/login", (req, res) => {
+//   res.sendFile(__dirname + "/login.html");
+// });
+
+app.post("/login", (req, res) => {
+  res.redirect("/main");
+});
+
+app.get("/main", (req, res) => {
+  res.sendFile(__dirname + "/public/index.html");
+});
+
+app.post("/logout", (req, res) => {
+  res.redirect("/loggedout");
+});
+
+app.get("/loggedout", (req, res) => {
+  res.sendFile(__dirname + "/public/login.html");
+});
+
 // API routes
 app.get('/api/data', (req, res) => {
   res.json(data);
@@ -194,8 +236,9 @@ app.delete('/api/plannedClimb', async (req, res) => {
 });
 
 // For any other route, serve index.html (supports SPA routing)
-app.get(/.*/, (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
+// // app.get(/.*/, (req, res) => {
+// app.get('/', (req, res) => {
+//   res.sendFile(path.join(__dirname, 'public', 'index.html'));
+// });
 
 app.listen(PORT, () => console.log(`✅ Server running at http://localhost:${PORT}`));

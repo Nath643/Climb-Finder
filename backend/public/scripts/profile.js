@@ -75,6 +75,12 @@ async function renderProfilePage() {
       <h3>Total distance completed: ${profile.totalDistance} miles</h3>
       <h3>Total altitude climbed: ${profile.totalAltitude} metres</h3>
     </div>
+
+    <div class="js-logout">
+      <form action="/logout" method="POST">
+        <button type="submit" class="js-logout-button">Log out</a>
+      </form>
+    </div>
   `;
 
   function renderTransport() {

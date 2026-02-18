@@ -34,10 +34,14 @@ INSERT INTO `plannedclimbs` (
     '2017-06-12'
 );
 
--- create profile table
-CREATE TABLE IF NOT EXISTS `profile` (
+-- create users table
+CREATE TABLE IF NOT EXISTS `users` (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    age INT,                             
+    userId VARCHAR(50),
+    password_hash VARCHAR(255),
+    created_at TIMESTAMP,
+    age INT,   
+    name VARCHAR(50),                          
     transport JSON,                      
     gear JSON,                           
     fitness VARCHAR(50),                 
@@ -46,8 +50,11 @@ CREATE TABLE IF NOT EXISTS `profile` (
     totalAltitude INT                    
 );
 
-INSERT INTO `profile` (
+INSERT INTO `users` (
+    userId,
+    password_hash,
     age,
+    name,
     transport,
     gear,
     fitness,
@@ -55,7 +62,9 @@ INSERT INTO `profile` (
     totalDistance,
     totalAltitude
 ) VALUES (
+    'user-01',
     21,
+    'Sample User',
     JSON_ARRAY('Car', 'Bike'),
     JSON_ARRAY('Waterproof-coat', 'Walking-boots', 'GPS'),
     'intermediate',
