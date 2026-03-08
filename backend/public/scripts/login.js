@@ -1,3 +1,17 @@
+// make it so that when you click the login button, it logs in user 1.
+  // on the main and completed climbs pages, there is a session which stores the number 1 which is the id of the 1st user. 
+  // redo the queries to the database for the dynamic loading (ref to examples of this already in server!), make it work for user 1 - get all of user 1s data and load that.
+
+  // (server code) - that is my server code, I set the session.number in the post login route, but I want to access it in the get completed climbs function, because instead of hard coding where users = 1 in that function, I want to put the session.number! 
+
+// The log out button should then do something like kill the session and redirect to the login page, which it already does. 
+
+
+
+
+// very short answer: I just want to practice with sessions, how do I store simple info in a session and just display it on the page (very quickly): like when the login button is clicked, the number 1 is stored in a session, then displayed on the main page that the user is redirected to?
+
+
 //I want to build a very basic first log in system (that doesn't have to be secure yet - just very basic) into my web app made with javascript, and express js, and mysql, I understand that I need to use sessions/cookies for this, so in very simple terms, and fairly short, teach me how to use sessions / cookies in a general sense, to start I want to just make my app such that you click a button on the log in page, and you are redirected to the main page of the app, with some data being carried in a session/cookie, like a simulated log in system
 
 document.querySelector('.js-login-button').addEventListener('click', async () => {

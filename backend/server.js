@@ -24,11 +24,17 @@ dotenv.config();
 const app = express();
 const PORT = 3000;
 
+app.use(session({
+  secret: 'secret-key',
+  resave: false,
+  saveUninitialized: true
+}));
+
 // Middleware to parse JSON requests
 app.use(express.json());
 console.log(__dirname);
 
-// middleware?
+// middleware
 app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
@@ -67,7 +73,7 @@ const pool = mysql.createPool({
 
 // Get data
 async function getCompletedClimbs() {
-  const [rows] = await pool.query('SELECT * FROM `completedclimbs`');
+  const [rows] = await pool.query('SELECT * FROM `completedclimbs` WHERE user_id = 1');
   return rows;
 }
 
@@ -77,12 +83,12 @@ async function getMountains() {
 }
 
 async function getPlannedClimbs() {
-  const [rows] = await pool.query('SELECT * FROM `plannedclimbs`');
+  const [rows] = await pool.query('SELECT * FROM `plannedclimbs` WHERE user_id = 1');
   return rows;
 }
 
 async function getProfile() {
-  const [rows] = await pool.query('SELECT * FROM `profile` WHERE id = 1');
+  const [rows] = await pool.query('SELECT * FROM `users` WHERE id = 1');
   const profile = rows[0];
 
   // Parse all array fields safely
@@ -99,7 +105,7 @@ async function getCompletedClimb(mountainId) {
   const [rows] = await pool.query(`
     SELECT * 
     FROM completedclimbs
-    WHERE mountainId = ?
+    WHERE mountain_id = ?
     `, [mountainId]);
   return rows[0];
 }
@@ -108,7 +114,7 @@ async function getPlannedClimb(mountainId) {
   const [rows] = await pool.query(`
     SELECT * 
     FROM plannedclimbs
-    WHERE mountainId = ?
+    WHERE mountain_id = ?
     `, [mountainId]);
   return rows[0];
 }
@@ -116,7 +122,7 @@ async function getPlannedClimb(mountainId) {
 // CREATE a completed climb
 async function createCompletedClimb(mountainId, date, duration, weather, companions) {
   const [result] = await pool.query(`
-    INSERT INTO completedclimbs (mountainId, date, duration, weather, companions)
+    INSERT INTO completedclimbs (mountain_id, date, duration, weather, companions)
     VALUES (?, ?, ?, ?, ?)
   `, [mountainId, date, duration, weather, companions])
   const id = result.insertId
@@ -126,7 +132,7 @@ async function createCompletedClimb(mountainId, date, duration, weather, compani
 // CREATE a planned climb
 async function createPlannedClimb(mountainId, date) {
   const [result] = await pool.query(`
-    INSERT INTO plannedclimbs (mountainId, date)
+    INSERT INTO plannedclimbs (mountain_id, date)
     VALUES (?, ?)
   `, [mountainId, date])
   const id = result.insertId
@@ -135,7 +141,7 @@ async function createPlannedClimb(mountainId, date) {
 
 async function updateProfile(age, transport, gear, fitness, lookingFor, totalDistance, totalAltitude) {
   const [result] = await pool.query(`
-    UPDATE profile
+    UPDATE users
     SET age = ?, transport = ?, gear = ?, fitness = ?, lookingFor = ?, totalDistance = ?, totalAltitude = ?
     WHERE id = 1
   `, [age, transport, gear, fitness, lookingFor, totalDistance, totalAltitude]);
@@ -149,11 +155,16 @@ async function updateProfile(age, transport, gear, fitness, lookingFor, totalDis
 // });
 
 app.post("/login", (req, res) => {
+  req.session.number = 1;
   res.redirect("/main");
 });
 
 app.get("/main", (req, res) => {
   res.sendFile(__dirname + "/public/index.html");
+});
+
+app.get("/session-number", (req, res) => {
+  res.json({ number: req.session.number || 0});
 });
 
 app.post("/logout", (req, res) => {
@@ -222,7 +233,7 @@ app.post('/api/plannedClimb', async (req, res) => {
 app.delete('/api/completedClimb', async (req, res) => {
   const {id} = req.body; 
 
-  await pool.query(`DELETE FROM completedClimbs WHERE id = ?`, [id]);
+  await pool.query(`DELETE FROM completedclimbs WHERE id = ?`, [id]);
 
   res.json({ success: true });
 });
@@ -230,7 +241,7 @@ app.delete('/api/completedClimb', async (req, res) => {
 app.delete('/api/plannedClimb', async (req, res) => {
   const {id} = req.body; 
 
-  await pool.query(`DELETE FROM plannedClimbs WHERE id = ?`, [id]);
+  await pool.query(`DELETE FROM plannedclimbs WHERE id = ?`, [id]);
 
   res.json({ success: true });
 });

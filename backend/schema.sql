@@ -4,42 +4,11 @@ CREATE DATABASE IF NOT EXISTS `climbfinder`;
 -- Use the database
 USE `climbfinder`;
 
--- Create the table for completed climbs
-CREATE TABLE IF NOT EXISTS `completedclimbs` (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    mountainId VARCHAR(50),
-    date VARCHAR(50),
-    duration VARCHAR(100),
-    weather VARCHAR(50),
-    companions TEXT
-);
-
-INSERT INTO `completedclimbs` (mountainId, date, duration, weather, companions)
-VALUES
-    ('helv', '2015-05-12', '2 hours 30 minutes', 'clear', 'Luke, Mike, Jill'),
-    ('blen', '2016-06-08', '3 hours 55 minutes', 'cloudy', 'Bill, Cindy, John');
-
--- Create planned climbs table
-CREATE TABLE IF NOT EXISTS `plannedclimbs` (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    mountainId VARCHAR(50),                  
-    date VARCHAR(50)                                     
-);
-
-INSERT INTO `plannedclimbs` (
-    mountainId,
-    date
-) VALUES (
-    'helv',
-    '2017-06-12'
-);
-
 -- create users table
 CREATE TABLE IF NOT EXISTS `users` (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    userId VARCHAR(50),
     password_hash VARCHAR(255),
-    created_at TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     age INT,   
     name VARCHAR(50),                          
     transport JSON,                      
@@ -51,7 +20,6 @@ CREATE TABLE IF NOT EXISTS `users` (
 );
 
 INSERT INTO `users` (
-    userId,
     password_hash,
     age,
     name,
@@ -61,22 +29,55 @@ INSERT INTO `users` (
     lookingFor,
     totalDistance,
     totalAltitude
-) VALUES (
-    'user-01',
-    21,
-    'Sample User',
-    JSON_ARRAY('Car', 'Bike'),
-    JSON_ARRAY('Waterproof-coat', 'Walking-boots', 'GPS'),
-    'intermediate',
-    JSON_ARRAY('Exercise', 'Views'),
-    34,
-    21
+) VALUES 
+    ('pass', 21, 'Sample User', JSON_ARRAY('Car', 'Bike'), JSON_ARRAY('Waterproof-coat', 'Walking-boots', 'GPS'), 'intermediate', JSON_ARRAY('Exercise', 'Views'), 34, 21),
+    ('pass2', 24, 'other User', JSON_ARRAY('Car'), JSON_ARRAY('Walking-boots', 'GPS'), 'intermediate', JSON_ARRAY('Exercise', 'Views'), 34, 21);
+
+-- Create the table for completed climbs
+CREATE TABLE IF NOT EXISTS `completedclimbs` (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    mountain_id VARCHAR(50),
+    date DATE,
+    duration VARCHAR(100),
+    weather VARCHAR(50),
+    companions TEXT,
+    FOREIGN KEY (user_id) REFERENCES users(id)
 );
+
+INSERT INTO `completedclimbs` (
+    mountain_id, 
+    user_id,
+    date, 
+    duration, 
+    weather, 
+    companions
+)
+VALUES
+    ('helv', 1, '2015-05-12', '2 hours 30 minutes', 'clear', 'Luke, Mike, Jill'),
+    ('blen', 2, '2016-06-08', '3 hours 55 minutes', 'cloudy', 'Bill, Cindy, John');
+
+-- Create planned climbs table
+CREATE TABLE IF NOT EXISTS `plannedclimbs` (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    mountain_id VARCHAR(50),                  
+    date DATE,
+    FOREIGN KEY (user_id) REFERENCES users(id)                                
+);
+
+INSERT INTO `plannedclimbs` (
+    mountain_id,
+    user_id,
+    date
+) VALUES 
+    ('helv', 1, '2017-06-12'),
+    ('blen', 2, '2015-04-03');
 
 -- Create mountains table
 CREATE TABLE IF NOT EXISTS `mountains` (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    mountainId VARCHAR(50),                  
+    mountain_id VARCHAR(50),                  
     name VARCHAR(100),                           
     image TEXT,                          
     mapImage TEXT,                       
@@ -91,7 +92,7 @@ CREATE TABLE IF NOT EXISTS `mountains` (
 );
 
 INSERT INTO `mountains` (
-    mountainId,
+    mountain_id,
     name,
     image,
     mapImage,
@@ -119,7 +120,7 @@ INSERT INTO `mountains` (
 );
 
 INSERT INTO `mountains` (
-    mountainId,
+    mountain_id,
     name,
     image,
     mapImage,

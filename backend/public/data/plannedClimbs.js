@@ -60,6 +60,7 @@ export async function loadPlannedClimbsFetch() {
   const data = await response.json();
   // mutate the existing array
   plannedClimbs.splice(0, plannedClimbs.length, ...data);
+  console.log(plannedClimbs);
   return plannedClimbs;
 }
 

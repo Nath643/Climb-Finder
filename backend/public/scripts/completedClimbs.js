@@ -24,6 +24,21 @@ function showItems(menuName) {
 
 await renderCompletedClimbs();
 
+async function loadSessionNumber() {
+  try {
+    const res = await fetch('/session-number', {
+      credentials: 'same-origin'
+    });        // wait for fetch
+    const data = await res.json();                     // wait for JSON parsing
+    console.log("Number from session:", data.number);  // log in console
+    // document.getElementById('output').textContent = "Number: " + data.number;
+  } catch (err) {
+    console.error("Error fetching session number:", err);
+  }
+}
+
+loadSessionNumber();
+
 const url = new URL(window.location.href);
 const formOpen = url.searchParams.get('formOpen');
 const mountainId = url.searchParams.get('mountainId');
@@ -141,7 +156,7 @@ async function renderCompletedClimbs() {
   completedClimbs.forEach((climb) => {
     //console.log(climb.mountainId);
     //console.log(getMountain());
-    const mountain = getMountain(climb.mountainId);
+    const mountain = getMountain(climb.mountain_id);
     //console.log(mountain);
 
     completedClimbsHTML += `

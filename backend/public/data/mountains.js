@@ -2,7 +2,7 @@ export function getMountain(mountainId) {
   let matchingMountain;
 
   mountains.forEach((mountain) => {
-    if (mountain.mountainId === mountainId) {
+    if (mountain.mountain_id === mountainId) {
       matchingMountain = mountain;
     }
   });

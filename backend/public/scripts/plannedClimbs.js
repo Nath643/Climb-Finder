@@ -80,7 +80,10 @@ async function renderPlannedClimbs() {
   }
 
   plannedClimbs.forEach((plannedClimb) => {
-    const mountain = getMountain(plannedClimb.mountainId);
+    const mountain = getMountain(plannedClimb.mountain_id);
+
+    const formattedPlannedClimbsDate = plannedClimb.date.split('T')[0];
+    console.log(plannedClimb);
 
     plannedClimbsHTML += `
       <div class="planned-climb-section">
@@ -112,7 +115,7 @@ async function renderPlannedClimbs() {
 
         <div class="planned-climb-date">
           <h3>Date of Climb:</h3>
-          <input type="date" class="climb-date-input" value=${plannedClimb.date}>
+          <input type="date" class="climb-date-input" value=${formattedPlannedClimbsDate}>
         </div>
 
         <div class="planned-climb-recommended">
@@ -187,6 +190,11 @@ async function renderPlannedClimbs() {
   
         const climb = plannedClimbs.find(climb => climb.id == climbId);
         console.log(climb);
+
+        if (!climb || !climb.id) {  // <-- SAFETY CHECK
+          console.warn('Attempted to delete a climb that does not exist:', climbId);
+          return;
+        }
   
         await deleteplannedClimb(climb);
         await renderPlannedClimbs();
