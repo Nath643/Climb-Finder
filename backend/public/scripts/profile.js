@@ -21,6 +21,21 @@ function showItems(menuName) {
 
 await renderProfilePage();
 
+// async function loadSessionNumber() {
+//   try {
+//     const res = await fetch('/session-number', {
+//       credentials: 'same-origin'
+//     });        // wait for fetch
+//     const data = await res.json();                     // wait for JSON parsing
+//     console.log("Number from session:", data.number);  // log in console
+//     // document.getElementById('output').textContent = "Number: " + data.number;
+//   } catch (err) {
+//     console.error("Error fetching session number:", err);
+//   }
+// }
+
+// loadSessionNumber();
+
 async function renderProfilePage() {
   await loadProfileFetch();
   console.log(profile);

@@ -27,7 +27,7 @@ export async function deleteCompletedClimb(completedClimb) {
 export let completedClimbs = [];
 
 export async function loadCompletedClimbsFetch() {
-  const response = await fetch('http://localhost:3000/api/completedClimbs');
+  const response = await fetch('http://localhost:3000/api/completedClimbs', {credentials: 'same-origin'});
   const data = await response.json();
   // mutate the existing array
   completedClimbs.splice(0, completedClimbs.length, ...data);

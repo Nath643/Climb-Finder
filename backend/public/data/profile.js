@@ -5,7 +5,7 @@
 export let profile = {};
 
 export async function loadProfileFetch() {
-  const response = await fetch('http://localhost:3000/api/profile');
+  const response = await fetch('http://localhost:3000/api/profile', {credentials: 'same-origin'});
   const data = await response.json();
   Object.assign(profile, Array.isArray(data) ? data[0] : data);
   return profile;

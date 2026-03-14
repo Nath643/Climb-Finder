@@ -56,7 +56,7 @@ export async function deleteplannedClimb(plannedClimb) {
 export let plannedClimbs = [];
 
 export async function loadPlannedClimbsFetch() {
-  const response = await fetch('http://localhost:3000/api/plannedClimbs');
+  const response = await fetch('http://localhost:3000/api/plannedClimbs', {credentials: 'same-origin'});
   const data = await response.json();
   // mutate the existing array
   plannedClimbs.splice(0, plannedClimbs.length, ...data);

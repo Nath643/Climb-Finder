@@ -72,8 +72,8 @@ const pool = mysql.createPool({
 }).promise();
 
 // Get data
-async function getCompletedClimbs() {
-  const [rows] = await pool.query('SELECT * FROM `completedclimbs` WHERE user_id = 1');
+async function getCompletedClimbs(userId) {
+  const [rows] = await pool.query('SELECT * FROM `completedclimbs` WHERE user_id = ?', [userId]);
   return rows;
 }
 
@@ -82,19 +82,32 @@ async function getMountains() {
   return rows;
 }
 
-async function getPlannedClimbs() {
-  const [rows] = await pool.query('SELECT * FROM `plannedclimbs` WHERE user_id = 1');
+async function getPlannedClimbs(userId) {
+  const [rows] = await pool.query('SELECT * FROM `plannedclimbs` WHERE user_id = ?', [userId]);
   return rows;
 }
 
-async function getProfile() {
-  const [rows] = await pool.query('SELECT * FROM `users` WHERE id = 1');
+async function getProfile(userId) {
+  const [rows] = await pool.query('SELECT * FROM `users` WHERE id = ?', [userId]);
+
+  if (rows.length === 0) {
+    return {
+      transport: [],
+      gear: [],
+      lookingFor: []
+    };
+  }
+
   const profile = rows[0];
 
   // Parse all array fields safely
   if (profile.gear && typeof profile.gear === 'string') profile.gear = JSON.parse(profile.gear);
   if (profile.transport && typeof profile.transport === 'string') profile.transport = JSON.parse(profile.transport);
   if (profile.lookingFor && typeof profile.lookingFor === 'string') profile.lookingFor = JSON.parse(profile.lookingFor);
+
+  profile.transport = profile.transport || [];
+  profile.gear = profile.gear || [];
+  profile.lookingFor = profile.lookingFor || [];
 
   return profile;
 }
@@ -139,14 +152,14 @@ async function createPlannedClimb(mountainId, date) {
   return getPlannedClimb(mountainId); // gets the first instance of the one with that mountain id, not the that was just created, you can alternatively just return all the arguments given to createCompletedClimb.
 }
 
-async function updateProfile(age, transport, gear, fitness, lookingFor, totalDistance, totalAltitude) {
+async function updateProfile(userId, age, transport, gear, fitness, lookingFor, totalDistance, totalAltitude) {
   const [result] = await pool.query(`
     UPDATE users
     SET age = ?, transport = ?, gear = ?, fitness = ?, lookingFor = ?, totalDistance = ?, totalAltitude = ?
     WHERE id = 1
   `, [age, transport, gear, fitness, lookingFor, totalDistance, totalAltitude]);
   // const id = result.insertId
-  return getProfile();
+  return getProfile(userId);
 }
 
 // LOGIN / OUT API routes
@@ -181,7 +194,7 @@ app.get('/api/data', (req, res) => {
 });
 
 app.get('/api/completedClimbs', async (req, res) => {
-  const completedClimbsResult = await getCompletedClimbs();
+  const completedClimbsResult = await getCompletedClimbs(req.session.number);
   res.send(completedClimbsResult);
 });
 
@@ -191,13 +204,18 @@ app.get('/api/mountains', async (req, res) => {
 });
 
 app.get('/api/plannedClimbs', async (req, res) => {
-  const plannedClimbsResult = await getPlannedClimbs();
+  const plannedClimbsResult = await getPlannedClimbs(req.session.number);
   res.send(plannedClimbsResult);
 });
 
 app.get('/api/profile', async (req, res) => {
-  const profileResult = await getProfile();
-  res.send(profileResult);
+  try {
+    const profileResult = await getProfile(req.session.number);
+    res.json(profileResult);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
 });
 
 app.put('/api/profile', async (req, res) => {
@@ -208,7 +226,7 @@ app.put('/api/profile', async (req, res) => {
   const transportJson = Array.isArray(transport) ? JSON.stringify(transport) : transport;
   const lookingForJson = Array.isArray(lookingFor) ? JSON.stringify(lookingFor) : lookingFor;
 
-  const updatedProfile = await updateProfile(age, transportJson, gearJson, fitness, lookingForJson, totalDistance, totalAltitude);
+  const updatedProfile = await updateProfile(req.session.number, age, transportJson, gearJson, fitness, lookingForJson, totalDistance, totalAltitude);
   res.json(updatedProfile);
 });
 
