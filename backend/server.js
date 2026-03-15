@@ -167,8 +167,24 @@ async function updateProfile(userId, age, transport, gear, fitness, lookingFor, 
 //   res.sendFile(__dirname + "/login.html");
 // });
 
-app.post("/login", (req, res) => {
-  req.session.number = 1;
+app.post("/login", async (req, res) => {
+  // console.log('req.body:', req.body, typeof req.body);  // ← ADD THIS
+  // console.log('Number(req.body):', Number(req.body));   // ← ADD THIS
+  // req.session.number = Number(req.body.number);
+  // console.log('session.number:', req.session.number);   // ← ADD THIS
+  // res.redirect("/main");
+
+  req.session.number = Number(req.body.number);
+
+  // async await maybe unnecessary:
+
+  await new Promise((resolve, reject) => {
+    req.session.save(err => {
+      if (err) reject(err);
+      else resolve();
+    });
+  });
+
   res.redirect("/main");
 });
 
@@ -181,7 +197,9 @@ app.get("/session-number", (req, res) => {
 });
 
 app.post("/logout", (req, res) => {
-  res.redirect("/loggedout");
+  req.session.destroy(() => {
+    res.redirect("/loggedout");
+  });
 });
 
 app.get("/loggedout", (req, res) => {

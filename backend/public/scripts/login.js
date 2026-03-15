@@ -4,15 +4,6 @@
 
   // (server code) - that is my server code, I set the session.number in the post login route, but I want to access it in the get completed climbs function, because instead of hard coding where users = 1 in that function, I want to put the session.number! 
 
-// The log out button should then do something like kill the session and redirect to the login page, which it already does. 
-
-
-
-
-// very short answer: I just want to practice with sessions, how do I store simple info in a session and just display it on the page (very quickly): like when the login button is clicked, the number 1 is stored in a session, then displayed on the main page that the user is redirected to?
-
-
-//I want to build a very basic first log in system (that doesn't have to be secure yet - just very basic) into my web app made with javascript, and express js, and mysql, I understand that I need to use sessions/cookies for this, so in very simple terms, and fairly short, teach me how to use sessions / cookies in a general sense, to start I want to just make my app such that you click a button on the log in page, and you are redirected to the main page of the app, with some data being carried in a session/cookie, like a simulated log in system
 
 document.querySelector('.js-login-button').addEventListener('click', async () => {
   // const html = await (await fetch('http://localhost:3000/index.html')).text();
@@ -27,9 +18,27 @@ document.querySelector('.js-login-button').addEventListener('click', async () =>
   // window.location.href = 'http://localhost:3000/index.html';  // Server handles redirect
 
   let idInputValue = document.querySelector('.js-id-input').value;
+  // send this to the server to be stored in a session - probably make an endpoint in the sever which sends the given value to the session end point in the server (?)
+  // do the send from here (post??)
+  // send a post to / login, it needs to have a body containing idInputValue, then read that in the endpoint, and set session.id to that. 
   console.log(idInputValue);
 
-  
+  // const response = await fetch('http://localhost:3000/login', {
+  //   method: 'POST',
+  //   headers: {
+  //     'Content-Type': 'application/json'
+  //   },
+  //   body: JSON.stringify({number: Number(idInputValue)})
+  // });  
+
+  const response = await fetch('http://localhost:3000/login', {
+  method: 'POST',
+  headers: { 
+    'Content-Type': 'application/json'  // Capital 'C' & 'T'
+  },
+  body: JSON.stringify({ number: 1 })  // HARDCODE 1 to test
+});
+console.log('Response status:', response.status);  // ADD THIS
 })
 
 
