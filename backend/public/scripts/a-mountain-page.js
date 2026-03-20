@@ -31,7 +31,7 @@ async function renderAMountainPage() {
   let matchingMountain;
 
   mountains.forEach((mountain) => {
-    if(mountain.mountainId === mountainId) {
+    if(mountain.mountain_id === mountainId) {
       matchingMountain = mountain;
     }
 
@@ -66,13 +66,13 @@ async function renderAMountainPage() {
           <p>Total distance of the climb: ${matchingMountain.distance} miles</p>
         </div>
 
-        <a href="planned-climbs.html?formOpen=true&mountainId=${matchingMountain.mountainId}">
+        <a href="planned-climbs.html?formOpen=true&mountainId=${matchingMountain.mountain_id}">
           <button class="add-to-planned-climbs-button js-add-to-planned-climbs-button">
             Add to planned climbs
           </button>
         </a>
         
-        <a href="completed-climbs.html?formOpen=true&mountainId=${matchingMountain.mountainId}">
+        <a href="completed-climbs.html?formOpen=true&mountainId=${matchingMountain.mountain_id}">
           <button class="add-to-completed-climbs-button js-add-to-completed-climbs-button">
             Add to completed climbs
           </button>

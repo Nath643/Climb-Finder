@@ -37,7 +37,7 @@ export async function addPlannedClimb(mountain, date) {
       'content-type': 'application/json'
     },
     body: JSON.stringify({
-      mountainId: mountain,
+      mountain_id: mountain,
       date, 
     })
   });

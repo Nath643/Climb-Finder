@@ -43,7 +43,7 @@ async function renderRecommendedMountains() {
   let recommendedMountainsHTML = '';
 
   mountains.forEach((mountain) => {
-    const mountainId = mountain.mountainId;
+    const mountainId = mountain.mountain_id;
     const mountainName = mountain.name;
     const mountainImage = mountain.image;
     const mountainMap = mountain.mapEmbed;

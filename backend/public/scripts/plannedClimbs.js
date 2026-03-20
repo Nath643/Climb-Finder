@@ -39,12 +39,12 @@ await renderPlannedClimbs();
 
 const url = new URL(window.location.href);
 const formOpen = url.searchParams.get('formOpen');
-const mountainId = url.searchParams.get('mountainId');
+const mountain_id = url.searchParams.get('mountainId');
 
 if (formOpen === 'true') {
   document.querySelector('.js-add-planned-climb-button').click();
-  document.querySelector('.js-mountain-dropdown').value = `${mountainId}`;
-}
+  document.querySelector('.js-mountain-dropdown').value = `${mountain_id}`;
+}   // completed climbs is working, but mountain id is undefine when user submits in this one - look at how the inner html is written over when the form appears / is submitted etc. 
 
 async function renderPlannedClimbs() {
   console.log(plannedClimbs);
@@ -88,14 +88,16 @@ async function renderPlannedClimbs() {
     let html = '<option value="" disabled selected>Select an option</option>';
 
     mountains.forEach((mountain) => {
-      html += `<option value="${mountain.mountainId}">${mountain.name}</option>`;
+      html += `<option value="${mountain.mountain_id}">${mountain.name}</option>`;
     });
 
     return html;
   }
 
   plannedClimbs.forEach((plannedClimb) => {
+    console.log(plannedClimb.mountain_id);
     const mountain = getMountain(plannedClimb.mountain_id);
+    console.log(mountain);
 
     const formattedPlannedClimbsDate = plannedClimb.date.split('T')[0];
     console.log(plannedClimb);
@@ -121,7 +123,7 @@ async function renderPlannedClimbs() {
             <p>Total distance of the climb: ${mountain.distance} miles</p>
 
             <div class="more-info-button-container">
-              <a href="a-mountain-page.html?mountainId=${mountain.mountainId}">
+              <a href="a-mountain-page.html?mountainId=${mountain.mountain_id}">
                 <button class="more-info-button">More Info About This Mountain</button>
               </a>
             </div>
@@ -165,14 +167,18 @@ async function renderPlannedClimbs() {
   });
 
   document.querySelector('.js-submit-button').addEventListener('click', async () => {
-    const mountain = document.querySelector('.js-mountain-dropdown').value;
-    const date = document.querySelector('.js-climb-date').value;
+    const mountainInput = document.querySelector('.js-mountain-dropdown').value;
+    console.log(mountainInput);
+    const dateInput = document.querySelector('.js-climb-date').value;
 
-    if (!mountain || !date) {
+    if (!mountainInput || !dateInput) {
       alert("Please fill out fields");
     }
     else {
-      await addPlannedClimb(mountain, date);
+      console.log('the 2 input:');
+      console.log(mountainInput);
+      console.log(dateInput);
+      await addPlannedClimb(mountainInput, dateInput);
 
       document.querySelector('.js-add-planned-climb-button').classList.remove('climb-button-clicked');
       document.querySelector('.js-select-mountain').classList.add('select-mountain');

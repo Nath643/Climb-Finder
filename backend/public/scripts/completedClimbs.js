@@ -41,11 +41,11 @@ await renderCompletedClimbs();
 
 const url = new URL(window.location.href);
 const formOpen = url.searchParams.get('formOpen');
-const mountainId = url.searchParams.get('mountainId');
+const mountain_id = url.searchParams.get('mountainId');
 
 if (formOpen === 'true') {
   document.querySelector('.js-add-completed-climb-button').click();
-  document.querySelector('.js-mountain-dropdown').value = `${mountainId}`;
+  document.querySelector('.js-mountain-dropdown').value = `${mountain_id}`;
 }
 
 // const urlWithoutParams = window.location.origin + window.location.pathname;
@@ -53,6 +53,7 @@ if (formOpen === 'true') {
 
 async function calculateDistanceAndAltitude() {
   await loadCompletedClimbsFetch();
+  await loadMountainsFetch();
   await loadProfileFetch();
   console.log(completedClimbs);
   console.log(profile);
@@ -62,13 +63,13 @@ async function calculateDistanceAndAltitude() {
   let completedClimbsAltitude = 0;
 
   completedClimbs.forEach((completedClimb) => {
-    const mountain = getMountain(completedClimb.mountainId);
+    const mountain = getMountain(completedClimb.mountain_id);
     completedClimbsDistance += mountain.distance;
     console.log(completedClimbsDistance);
   });
 
   completedClimbs.forEach((completedClimb) => {
-    const mountain = getMountain(completedClimb.mountainId);
+    const mountain = getMountain(completedClimb.mountain_id);
     completedClimbsAltitude += mountain.height;
     console.log(completedClimbsAltitude);
   });
@@ -83,13 +84,15 @@ async function calculateDistanceAndAltitude() {
 }
 
 async function renderCompletedClimbs() {
-  //console.log(completedClimbs);
+  console.log(completedClimbs);
   await loadCompletedClimbsFetch();
-  //console.log(completedClimbs);
+  console.log(completedClimbs);
 
   //console.log(mountains);
   await loadMountainsFetch();
-  //console.log(mountains);
+  console.log(mountains);
+
+  console.log(completedClimbs);
 
   let completedClimbsHTML = `
     <div class="add-completed-mountain-section">
@@ -147,17 +150,18 @@ async function renderCompletedClimbs() {
     let html = '<option value="" disabled selected>Select an option</option>';
 
     mountains.forEach((mountain) => {
-      html += `<option value="${mountain.mountainId}">${mountain.name}</option>`;
+      html += `<option value="${mountain.mountain_id}">${mountain.name}</option>`;
     });
 
     return html;
   }
   
   completedClimbs.forEach((climb) => {
-    //console.log(climb.mountainId);
+    console.log(climb);
     //console.log(getMountain());
+    console.log(climb.mountain_id);
     const mountain = getMountain(climb.mountain_id);
-    //console.log(mountain);
+    console.log(mountain);
 
     completedClimbsHTML += `
       <div class="completed-mountain-section">
@@ -189,7 +193,7 @@ async function renderCompletedClimbs() {
         </div>
 
         <div class="more-info-button-container">
-          <a href="a-mountain-page.html?mountainId=${mountain.mountainId}">
+          <a href="a-mountain-page.html?mountainId=${mountain.mountain_id}">
             <button class="more-info-button">More Info About This Mountain</button>
           </a>
         </div>
@@ -210,18 +214,19 @@ async function renderCompletedClimbs() {
   });
 
   document.querySelector('.js-submit-button').addEventListener('click', async () => {
-    const mountain = document.querySelector('.js-mountain-dropdown').value;
+    const mountainInput = document.querySelector('.js-mountain-dropdown').value;
+    console.log(mountainInput);
     const date = document.querySelector('.js-climb-date').value;
     const durationHours = document.querySelector('.js-duration-hours').value;
     const durationMins = document.querySelector('.js-duration-mins').value;
     const weather = document.querySelector('.js-weather-dropdown').value;
     const companions = document.querySelector('.js-companions-input').value;
 
-    if (!mountain || !date || !durationHours || !durationMins || !weather || !companions) {
+    if (!mountainInput || !date || !durationHours || !durationMins || !weather || !companions) {
       alert("Please fill out fields");
     }
     else {
-      await addCompletedClimb(mountain, date, durationHours, durationMins, weather, companions);
+      await addCompletedClimb(mountainInput, date, durationHours, durationMins, weather, companions);
       await calculateDistanceAndAltitude();
 
       document.querySelector('.js-add-completed-climb-button').classList.remove('climb-button-clicked');

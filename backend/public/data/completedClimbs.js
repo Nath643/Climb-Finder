@@ -5,7 +5,7 @@ export async function addCompletedClimb(mountain, date, durationHours, durationM
       'content-type': 'application/json'
     },
     body: JSON.stringify({
-      mountainId: mountain,
+      mountain_id: mountain,
       date, 
       duration: `${durationHours} hours ${durationMins} minutes`, 
       weather, 

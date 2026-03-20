@@ -1,8 +1,8 @@
-export function getMountain(mountainId) {
+export function getMountain(mountain_id) {
   let matchingMountain;
 
   mountains.forEach((mountain) => {
-    if (mountain.mountain_id === mountainId) {
+    if (mountain.mountain_id === mountain_id) {
       matchingMountain = mountain;
     }
   });

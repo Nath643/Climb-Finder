@@ -1,16 +1,3 @@
-//  const express = require('express');
-//  const app = express();
-//  const port = 8383;
-
-//  app.use(express.static('public'));
-
-//  app.get('/info', (req, res) => {
-//   res.status(200).json({info: 'preset text'});
-//  });
-
-//  app.listen(port, () => console.log(`server has started on port: ${port}`));
-
-
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
@@ -114,42 +101,42 @@ async function getProfile(userId) {
 
 // Don't input mountainid directly with ${} as it is coming directly from a http request from a user - we can't trust it. The syntax used below is a prepared statement
 
-async function getCompletedClimb(mountainId) {
+async function getCompletedClimb(mountain_id) {
   const [rows] = await pool.query(`
     SELECT * 
     FROM completedclimbs
     WHERE mountain_id = ?
-    `, [mountainId]);
+    `, [mountain_id]);
   return rows[0];
 }
 
-async function getPlannedClimb(mountainId) {
+async function getPlannedClimb(mountain_id) {
   const [rows] = await pool.query(`
     SELECT * 
     FROM plannedclimbs
     WHERE mountain_id = ?
-    `, [mountainId]);
+    `, [mountain_id]);
   return rows[0];
 }
 
 // CREATE a completed climb
-async function createCompletedClimb(mountainId, date, duration, weather, companions) {
+async function createCompletedClimb(userId, mountain_id, date, duration, weather, companions) {
   const [result] = await pool.query(`
-    INSERT INTO completedclimbs (mountain_id, date, duration, weather, companions)
-    VALUES (?, ?, ?, ?, ?)
-  `, [mountainId, date, duration, weather, companions])
+    INSERT INTO completedclimbs (user_id, mountain_id, date, duration, weather, companions)
+    VALUES (?, ?, ?, ?, ?, ?)
+  `, [userId, mountain_id, date, duration, weather, companions])
   const id = result.insertId
-  return getCompletedClimb(mountainId); // gets the first instance of the one with that mountain id, not the that was just created, you can alternatively just return all the arguments given to createCompletedClimb.
+  return getCompletedClimb(mountain_id); // gets the first instance of the one with that mountain id, not the that was just created, you can alternatively just return all the arguments given to createCompletedClimb.
 }
 
 // CREATE a planned climb
-async function createPlannedClimb(mountainId, date) {
+async function createPlannedClimb(userId, mountain_id, date) {
   const [result] = await pool.query(`
-    INSERT INTO plannedclimbs (mountain_id, date)
-    VALUES (?, ?)
-  `, [mountainId, date])
+    INSERT INTO plannedclimbs (user_id, mountain_id, date)
+    VALUES (?, ?, ?)
+  `, [userId, mountain_id, date])
   const id = result.insertId
-  return getPlannedClimb(mountainId); // gets the first instance of the one with that mountain id, not the that was just created, you can alternatively just return all the arguments given to createCompletedClimb.
+  return getPlannedClimb(mountain_id); // gets the first instance of the one with that mountain id, not the that was just created, you can alternatively just return all the arguments given to createCompletedClimb.
 }
 
 async function updateProfile(userId, age, transport, gear, fitness, lookingFor, totalDistance, totalAltitude) {
@@ -249,21 +236,17 @@ app.put('/api/profile', async (req, res) => {
 });
 
 app.post('/api/completedClimb', async (req, res) => {
-  const {mountainId, date, duration, weather, companions} = req.body;
-  // ASYNC MAYBE NOT NECESSARY
-  (async () => {
-    const createdCompletedClimb = await createCompletedClimb(mountainId, date, duration, weather, companions);
-    res.status(201).send(createdCompletedClimb);
-  })();
-});
+  const {mountain_id, date, duration, weather, companions} = req.body;
+
+  const createdCompletedClimb = await createCompletedClimb(req.session.number, mountain_id, date, duration, weather, companions);
+  res.status(201).send(createdCompletedClimb);
+}); // I'M DE HARD-CODING THE CREATECOMPLETED CLIMBS - this is my server code, I'm trying to feed the number stored in the session into the createCompletedClimb function, so that the userId that is sent to the database when creating the completedClimb is the number in the session - do a short answer of the simplest way to do this
 
 app.post('/api/plannedClimb', async (req, res) => {
-  const {mountainId, date} = req.body;
+  const {mountain_id, date} = req.body;
 
-  (async () => {
-    const createdPlannedClimb = await createPlannedClimb(mountainId, date);
-    res.status(201).send(createdPlannedClimb);
-  })();
+  const createdPlannedClimb = await createPlannedClimb(req.session.number, mountain_id, date);
+  res.status(201).send(createdPlannedClimb);
 });
 
 app.delete('/api/completedClimb', async (req, res) => {
