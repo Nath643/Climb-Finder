@@ -143,8 +143,8 @@ async function updateProfile(userId, age, transport, gear, fitness, lookingFor, 
   const [result] = await pool.query(`
     UPDATE users
     SET age = ?, transport = ?, gear = ?, fitness = ?, lookingFor = ?, totalDistance = ?, totalAltitude = ?
-    WHERE id = 1
-  `, [age, transport, gear, fitness, lookingFor, totalDistance, totalAltitude]);
+    WHERE id = ?
+  `, [age, transport, gear, fitness, lookingFor, totalDistance, totalAltitude, userId]);
   // const id = result.insertId
   return getProfile(userId);
 }

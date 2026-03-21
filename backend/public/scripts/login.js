@@ -22,3 +22,11 @@
 
 //   console.log('Response status:', response.status);  
 // })
+
+
+
+// patch profile page to make it updatable, like did with all mountain pages
+// then, 2 inputs on login page, one for username, one for password.
+// send username and password to database and return a user id, load pages as already doing.
+
+// then, registraion section: type a username and password, that will be added to the database. 

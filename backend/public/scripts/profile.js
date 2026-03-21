@@ -77,7 +77,7 @@ async function renderProfilePage() {
     </div>
 
     <div class="gear-container profile-grid-subcontainer">
-      <h3>What gear you have:</h3>
+      <h3>Your gear:</h3>
       <ul>
         ${renderGear()}
       </ul>
