@@ -155,15 +155,17 @@ async function updateProfile(userId, age, transport, gear, fitness, lookingFor, 
 // });
 
 app.post("/login", async (req, res) => {
-  // console.log('req.body:', req.body, typeof req.body);  // ← ADD THIS
-  // console.log('Number(req.body):', Number(req.body));   // ← ADD THIS
-  // req.session.number = Number(req.body.number);
-  // console.log('session.number:', req.session.number);   // ← ADD THIS
-  // res.redirect("/main");
+  const [result] = await pool.query(`
+    SELECT id
+    FROM users
+    WHERE name = ? AND password_hash = ?
+  `, [req.body.username, req.body.password]);
 
-  req.session.number = Number(req.body.number);
+  if (result.length === 0) {
+    return res.send("Invalid username or password");
+  } 
 
-  // async await maybe unnecessary:
+  req.session.number = result[0].id;
 
   await new Promise((resolve, reject) => {
     req.session.save(err => {
