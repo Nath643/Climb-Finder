@@ -42,12 +42,13 @@
 
     <main>
       <section class="page-title">
-        <h2>Login Page</h2>
+        <h2>Login / Registration Page</h2>
       </section>
 
       <section class="login-grid">
+        <h3>Already Have an Account? Login here:</h3>
+
         <form action="/login" method="POST">
-          <!-- <input type="number" class="js-id-input" name="number"> -->
 
           <h4>Username</h4>
           <input type="text" class="js-username-input" name="username">
@@ -57,6 +58,20 @@
           <button type="submit" class="js-login-button">Login</a>
         </form>
       </section>
+
+      <section class="registration-grid">
+         <h3>New? Create an Account Here:</h3>
+        <form action="/register" method="POST">
+        
+          <h4>Username</h4>
+          <input type="text" class="js-username-register-input" name="username">
+          <h4>Password</h4>
+          <input type="text" class="js-password-register-input" name="password">
+
+          <button type="submit" class="js-register-button">Register</a>
+        </form>
+      </section>
+
     </main>
 
     <script type="module" src="scripts/login.js"></script>

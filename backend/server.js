@@ -41,15 +41,6 @@ app.get('/index.html', (req, res) => {
   res.sendFile((path.join(__dirname, 'public', 'index.html')));
 });
 
-// // Path to JSON file for storing data
-// const DATA_FILE = path.join(__dirname, 'data.json');
-
-// // Load or initialize data
-// let data = [];
-// if (fs.existsSync(DATA_FILE)) {
-//   data = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
-// }
-
 // Connect to database
 const pool = mysql.createPool({
   host: process.env.MYSQL_HOST,
@@ -98,8 +89,6 @@ async function getProfile(userId) {
 
   return profile;
 }
-
-// Don't input mountainid directly with ${} as it is coming directly from a http request from a user - we can't trust it. The syntax used below is a prepared statement
 
 async function getCompletedClimb(mountain_id) {
   const [rows] = await pool.query(`
@@ -150,22 +139,47 @@ async function updateProfile(userId, age, transport, gear, fitness, lookingFor, 
 }
 
 // LOGIN / OUT API routes
-// app.get("/login", (req, res) => {
-//   res.sendFile(__dirname + "/login.html");
-// });
 
-app.post("/login", async (req, res) => {
+async function login(username, password) {
   const [result] = await pool.query(`
     SELECT id
     FROM users
     WHERE name = ? AND password_hash = ?
-  `, [req.body.username, req.body.password]);
+  `, [username, password]);
 
   if (result.length === 0) {
     return res.send("Invalid username or password");
   } 
 
-  req.session.number = result[0].id;
+  return result[0];
+}
+
+app.post("/login", async (req, res) => {
+  const user = await login(req.body.username, req.body.password);
+
+  if (!user) {
+    return res.send("invalid username or password");
+  }
+
+  req.session.number = user.id;
+
+  await new Promise((resolve, reject) => {
+    req.session.save(err => {
+      if (err) reject(err);
+      else resolve();
+    });
+  });
+
+  res.redirect("/main");
+});
+
+app.post("/register", async (req, res) => {
+  const [result] = await pool.query(`
+    INSERT INTO users (password_hash, age, name, transport, gear, fitness, lookingFor, totalDistance, totalAltitude)
+    VALUES (?, 18, ?, '[]', '[]', 'intermediate', '[]', 0, 0)
+  `, [req.body.password, req.body.username])
+
+  req.session.number = result.insertId;
 
   await new Promise((resolve, reject) => {
     req.session.save(err => {
@@ -242,7 +256,7 @@ app.post('/api/completedClimb', async (req, res) => {
 
   const createdCompletedClimb = await createCompletedClimb(req.session.number, mountain_id, date, duration, weather, companions);
   res.status(201).send(createdCompletedClimb);
-}); // I'M DE HARD-CODING THE CREATECOMPLETED CLIMBS - this is my server code, I'm trying to feed the number stored in the session into the createCompletedClimb function, so that the userId that is sent to the database when creating the completedClimb is the number in the session - do a short answer of the simplest way to do this
+}); 
 
 app.post('/api/plannedClimb', async (req, res) => {
   const {mountain_id, date} = req.body;
