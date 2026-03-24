@@ -17,9 +17,7 @@ body {
   padding: 20px;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  /* align-items: center; */
-  border-bottom: solid 1px rgb(215, 215, 215); /*I could make this render only if there is a section below it*/
-  /* background-color: white; */
+  border-bottom: solid 1px rgb(215, 215, 215);
   padding: 40px 150px 20px 150px;
 }
 

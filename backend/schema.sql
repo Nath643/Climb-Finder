@@ -19,20 +19,6 @@ CREATE TABLE IF NOT EXISTS `users` (
     totalAltitude INT                    
 );
 
-INSERT INTO `users` (
-    password_hash,
-    age,
-    name,
-    transport,
-    gear,
-    fitness,
-    lookingFor,
-    totalDistance,
-    totalAltitude
-) VALUES 
-    ('pass', 21, 'Sample User', JSON_ARRAY('Car', 'Bike'), JSON_ARRAY('Waterproof-coat', 'Walking-boots', 'GPS'), 'intermediate', JSON_ARRAY('Exercise', 'Views'), 34, 21),
-    ('pass2', 24, 'other User', JSON_ARRAY('Car'), JSON_ARRAY('Walking-boots', 'GPS'), 'intermediate', JSON_ARRAY('Exercise', 'Views'), 34, 21);
-
 -- Create the table for completed climbs
 CREATE TABLE IF NOT EXISTS `completedclimbs` (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -45,18 +31,6 @@ CREATE TABLE IF NOT EXISTS `completedclimbs` (
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
-INSERT INTO `completedclimbs` (
-    mountain_id, 
-    user_id,
-    date, 
-    duration, 
-    weather, 
-    companions
-)
-VALUES
-    ('helv', 1, '2015-05-12', '2 hours 30 minutes', 'clear', 'Luke, Mike, Jill'),
-    ('blen', 2, '2016-06-08', '3 hours 55 minutes', 'cloudy', 'Bill, Cindy, John');
-
 -- Create planned climbs table
 CREATE TABLE IF NOT EXISTS `plannedclimbs` (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -65,14 +39,6 @@ CREATE TABLE IF NOT EXISTS `plannedclimbs` (
     date DATE,
     FOREIGN KEY (user_id) REFERENCES users(id)                                
 );
-
-INSERT INTO `plannedclimbs` (
-    mountain_id,
-    user_id,
-    date
-) VALUES 
-    ('helv', 1, '2017-06-12'),
-    ('blen', 2, '2015-04-03');
 
 -- Create mountains table
 CREATE TABLE IF NOT EXISTS `mountains` (

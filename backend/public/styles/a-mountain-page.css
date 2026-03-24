@@ -47,15 +47,6 @@ iframe {
   position: relative;
 }
 
-/* .add-to-planned-climbs-button-container {
-  margin-top: 70px;
-} */
-
-/* .add-to-completed-climbs-button-container,
-.add-to-planned-climbs-button-container {
-  position: relative;
-} */
-
 .add-to-completed-climbs-button {
   background-color: rgb(24, 101, 0);
   color: rgb(232, 232, 232);

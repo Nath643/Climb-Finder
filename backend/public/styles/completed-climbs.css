@@ -22,7 +22,7 @@ body {
   grid-template-columns: 200px 200px 200px 200px 200px 200px 200px 200px;
   margin-bottom: 25px;
   padding-bottom: 15px;
-  border-bottom: solid 1px rgb(215, 215, 215) /*I could make this render only if there is a section below it*/
+  border-bottom: solid 1px rgb(215, 215, 215) 
 }
 
 .plus-container {
@@ -80,8 +80,7 @@ body {
   grid-template-columns: 213.63px 1fr 1fr 1fr 1fr;
   margin-bottom: 25px;
   padding-bottom: 15px;
-  border-bottom: solid 1px rgb(215, 215, 215); /*I could make this render only if there is a section below it*/
-  /* background-color: white; */
+  border-bottom: solid 1px rgb(215, 215, 215); 
 }
 
 .delete-completed-climb-button-container {

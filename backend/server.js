@@ -46,7 +46,6 @@ function requireAuth(req, res, next) {
   next();
 }
 
-// Get data
 async function getCompletedClimbs(userId) {
   const [rows] = await pool.query('SELECT * FROM `completedclimbs` WHERE user_id = ?', [userId]);
   return rows;
@@ -92,8 +91,6 @@ async function createCompletedClimb(userId, mountain_id, date, duration, weather
     INSERT INTO completedclimbs (user_id, mountain_id, date, duration, weather, companions)
     VALUES (?, ?, ?, ?, ?, ?)
   `, [userId, mountain_id, date, duration, weather, companions])
-  // const id = result.insertId
-  // return getCompletedClimb(mountain_id); // gets the first instance of the one with that mountain id, not the that was just created, you can alternatively just return all the arguments given to createCompletedClimb.
 }
 
 async function createPlannedClimb(userId, mountain_id, date) {
@@ -101,8 +98,6 @@ async function createPlannedClimb(userId, mountain_id, date) {
     INSERT INTO plannedclimbs (user_id, mountain_id, date)
     VALUES (?, ?, ?)
   `, [userId, mountain_id, date])
-  // const id = result.insertId
-  // return getPlannedClimb(mountain_id); // gets the first instance of the one with that mountain id, not the that was just created, you can alternatively just return all the arguments given to createCompletedClimb.
 }
 
 async function updateProfile(userId, age, transport, gear, fitness, lookingFor, totalDistance, totalAltitude) {
@@ -111,23 +106,21 @@ async function updateProfile(userId, age, transport, gear, fitness, lookingFor, 
     SET age = ?, transport = ?, gear = ?, fitness = ?, lookingFor = ?, totalDistance = ?, totalAltitude = ?
     WHERE id = ?
   `, [age, transport, gear, fitness, lookingFor, totalDistance, totalAltitude, userId]);
-  // const id = result.insertId
-  // return getProfile(userId);
 }
 
 const publicPath = path.join(__dirname, 'public');
 
-// 1. root route serves login page
+// root  serves login page
 app.get('/', (req, res) => {
   res.sendFile(path.join(publicPath, 'login.html'));
 });
 
-// 2. protected main page
+// protected main page
 app.get('/main', requireAuth, (req, res) => {
   res.sendFile(path.join(publicPath, 'index.html'));
 });
 
-// 3. static files after routes
+// static files after routes
 app.use(express.static(publicPath));
 
 // LOGIN and REGISTER

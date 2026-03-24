@@ -33,9 +33,6 @@ if (formOpen === 'true') {
   document.querySelector('.js-mountain-dropdown').value = `${mountain_id}`;
 }
 
-// const urlWithoutParams = window.location.origin + window.location.pathname;
-// window.history.replaceState({}, document.title, urlWithoutParams);
-
 async function calculateDistanceAndAltitude() {
   await loadCompletedClimbsFetch();
   await loadMountainsFetch();
@@ -43,7 +40,6 @@ async function calculateDistanceAndAltitude() {
   console.log(completedClimbs);
   console.log(profile);
 
-  //loop through the array, and get the 2 numbers
   let completedClimbsDistance = 0;
   let completedClimbsAltitude = 0;
 
@@ -59,12 +55,10 @@ async function calculateDistanceAndAltitude() {
     console.log(completedClimbsAltitude);
   });
 
-  // change those in profile
   profile.totalDistance = completedClimbsDistance;
   profile.totalAltitude = completedClimbsAltitude;
   console.log(profile);
 
-  // update profile
   updateProfile(profile);
 }
 
@@ -73,7 +67,6 @@ async function renderCompletedClimbs() {
   await loadCompletedClimbsFetch();
   console.log(completedClimbs);
 
-  //console.log(mountains);
   await loadMountainsFetch();
   console.log(mountains);
 
@@ -142,11 +135,7 @@ async function renderCompletedClimbs() {
   }
   
   completedClimbs.forEach((climb) => {
-    console.log(climb);
-    //console.log(getMountain());
-    console.log(climb.mountain_id);
     const mountain = getMountain(climb.mountain_id);
-    console.log(mountain);
 
     completedClimbsHTML += `
       <div class="completed-mountain-section">
@@ -226,9 +215,7 @@ async function renderCompletedClimbs() {
     }
   });
 
-  document.querySelector('.js-cancel-button').addEventListener('click', () => {
-    // document.querySelector('.js-mountain-dropdown').value = '';
-    
+  document.querySelector('.js-cancel-button').addEventListener('click', () => {  
     document.querySelector('.js-add-completed-climb-button').classList.remove('climb-button-clicked');
     document.querySelector('.js-select-mountain').classList.add('select-mountain');
     document.querySelector('.js-select-date').classList.add('select-date');
@@ -250,7 +237,6 @@ async function renderCompletedClimbs() {
       const climbId = idClass.split('-').pop();
 
       const climb = completedClimbs.find(climb => climb.id == climbId);
-      console.log(climb);
 
       await deleteCompletedClimb(climb);
       await calculateDistanceAndAltitude();

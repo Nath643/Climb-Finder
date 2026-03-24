@@ -144,7 +144,6 @@ async function renderProfilePage() {
         if (button.classList.contains(`js-transport-delete-button-${transportItem}`)) {
           let index = transportArray.indexOf(`${transportItem}`);
 
-          // we check if index is = -1, because if the item is not found in the array, and we try to remove the item at index -1, it wraps around and removes the last item in the array:
           if (index !== -1) {
             transportArray.splice(index, 1);
             await updateProfile(profile);
@@ -164,7 +163,6 @@ async function renderProfilePage() {
         if (button.classList.contains(`js-looking-for-delete-button-${lookingForItem}`)) {
           let index = lookingForArray.indexOf(`${lookingForItem}`);
 
-          // we check if index is = -1, because if the item is not found in the array, and we try to remove the item at index -1, it wraps around and removes the last item in the array:
           if (index !== -1) {
             lookingForArray.splice(index, 1);
             await updateProfile(profile);
@@ -186,7 +184,6 @@ async function renderProfilePage() {
         if (button.classList.contains(`js-gear-delete-button-${gearItem}`)) {
           let index = gearArray.indexOf(`${gearItem}`);
           
-          // we check if index is = -1, because if the item is not found in the array, and we try to remove the item at index -1, it wraps around and removes the last item in the array:
           if (index !== -1) {
             gearArray.splice(index, 1);
             await updateProfile(profile);

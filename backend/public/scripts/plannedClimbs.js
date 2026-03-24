@@ -29,7 +29,7 @@ const mountain_id = url.searchParams.get('mountainId');
 if (formOpen === 'true') {
   document.querySelector('.js-add-planned-climb-button').click();
   document.querySelector('.js-mountain-dropdown').value = `${mountain_id}`;
-}   // completed climbs is working, but mountain id is undefine when user submits in this one - look at how the inner html is written over when the form appears / is submitted etc. 
+}   
 
 async function renderPlannedClimbs() {
   console.log(plannedClimbs);
@@ -175,8 +175,6 @@ async function renderPlannedClimbs() {
   });
 
   document.querySelector('.js-cancel-button').addEventListener('click', () => {
-    // document.querySelector('.js-mountain-dropdown').value = '';
-
     document.querySelector('.js-add-planned-climb-button').classList.remove('climb-button-clicked');
     document.querySelector('.js-select-mountain').classList.add('select-mountain');
     document.querySelector('.js-select-date').classList.add('select-date');
