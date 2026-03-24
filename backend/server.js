@@ -1,28 +1,30 @@
 const express = require('express');
-const fs = require('fs');
 const path = require('path');
 const mysql = require('mysql2');
 const dotenv = require('dotenv');
 const session = require('express-session');
 const bcrypt = require('bcrypt');
-const cookieParser = require('cookie-parser');
 dotenv.config();
 
 const app = express();
 const PORT = 3000;
 
 app.use(session({
-  secret: 'secret-key',
+  secret: process.env.SESSION_SECRET,
   resave: false,
-  saveUninitialized: true
+  saveUninitialized: false,
+  cookie: {
+    httpOnly: true,     // prevents JS access (XSS protection)
+    secure: false,      // set true in HTTPS production
+    sameSite: "lax"     // CSRF protection
+  }
 }));
 
 // Middleware to parse JSON requests
-app.use(express.json());
-console.log(__dirname);
+app.use(express.json({ limit: '10kb' }));
 
 // middleware
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 
 app.get('/', (req, res) => {
   res.sendFile((path.join(__dirname, 'public', 'login.html')));
@@ -48,6 +50,13 @@ const pool = mysql.createPool({
   password: process.env.MYSQL_PASSWORD,
   database: process.env.MYSQL_DATABASE
 }).promise();
+
+function requireAuth(req, res, next) {
+  if (!req.session.number) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+  next();
+}
 
 // Get data
 async function getCompletedClimbs(userId) {
@@ -90,114 +99,118 @@ async function getProfile(userId) {
   return profile;
 }
 
-async function getCompletedClimb(mountain_id) {
-  const [rows] = await pool.query(`
-    SELECT * 
-    FROM completedclimbs
-    WHERE mountain_id = ?
-    `, [mountain_id]);
-  return rows[0];
-}
-
-async function getPlannedClimb(mountain_id) {
-  const [rows] = await pool.query(`
-    SELECT * 
-    FROM plannedclimbs
-    WHERE mountain_id = ?
-    `, [mountain_id]);
-  return rows[0];
-}
-
-// CREATE a completed climb
 async function createCompletedClimb(userId, mountain_id, date, duration, weather, companions) {
-  const [result] = await pool.query(`
+  await pool.query(`
     INSERT INTO completedclimbs (user_id, mountain_id, date, duration, weather, companions)
     VALUES (?, ?, ?, ?, ?, ?)
   `, [userId, mountain_id, date, duration, weather, companions])
-  const id = result.insertId
-  return getCompletedClimb(mountain_id); // gets the first instance of the one with that mountain id, not the that was just created, you can alternatively just return all the arguments given to createCompletedClimb.
+  // const id = result.insertId
+  // return getCompletedClimb(mountain_id); // gets the first instance of the one with that mountain id, not the that was just created, you can alternatively just return all the arguments given to createCompletedClimb.
 }
 
-// CREATE a planned climb
 async function createPlannedClimb(userId, mountain_id, date) {
-  const [result] = await pool.query(`
+  await pool.query(`
     INSERT INTO plannedclimbs (user_id, mountain_id, date)
     VALUES (?, ?, ?)
   `, [userId, mountain_id, date])
-  const id = result.insertId
-  return getPlannedClimb(mountain_id); // gets the first instance of the one with that mountain id, not the that was just created, you can alternatively just return all the arguments given to createCompletedClimb.
+  // const id = result.insertId
+  // return getPlannedClimb(mountain_id); // gets the first instance of the one with that mountain id, not the that was just created, you can alternatively just return all the arguments given to createCompletedClimb.
 }
 
 async function updateProfile(userId, age, transport, gear, fitness, lookingFor, totalDistance, totalAltitude) {
-  const [result] = await pool.query(`
+  await pool.query(`
     UPDATE users
     SET age = ?, transport = ?, gear = ?, fitness = ?, lookingFor = ?, totalDistance = ?, totalAltitude = ?
     WHERE id = ?
   `, [age, transport, gear, fitness, lookingFor, totalDistance, totalAltitude, userId]);
   // const id = result.insertId
-  return getProfile(userId);
+  // return getProfile(userId);
 }
 
-// LOGIN / OUT API routes
+// LOGIN and REGISTER
 
 async function login(username, password) {
   const [result] = await pool.query(`
-    SELECT id
+    SELECT id, password_hash
     FROM users
-    WHERE name = ? AND password_hash = ?
-  `, [username, password]);
+    WHERE name = ?
+  `, [username]);
 
-  if (result.length === 0) {
-    return res.send("Invalid username or password");
-  } 
+  if (result.length === 0) return null;
 
-  return result[0];
+  const user = result[0];
+
+  const match = await bcrypt.compare(password, user.password_hash);
+  if (!match) return null;
+
+  return { id: user.id };
 }
 
 app.post("/login", async (req, res) => {
-  const user = await login(req.body.username, req.body.password);
+  try {
+    const { username, password } = req.body;
 
-  if (!user) {
-    return res.send("invalid username or password");
-  }
+    if (!username || !password) {
+      return res.status(400).json({ error: "Missing fields" });
+    }
 
-  req.session.number = user.id;
+    const user = await login(username, password);
 
-  await new Promise((resolve, reject) => {
-    req.session.save(err => {
-      if (err) reject(err);
-      else resolve();
+    if (!user) {
+      return res.status(401).json({ error: "Invalid credentials" });
+    }
+
+    req.session.number = user.id;
+
+    req.session.save(() => {
+      res.redirect("/main");
     });
-  });
 
-  res.redirect("/main");
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
 });
 
 app.post("/register", async (req, res) => {
-  const [result] = await pool.query(`
-    INSERT INTO users (password_hash, age, name, transport, gear, fitness, lookingFor, totalDistance, totalAltitude)
-    VALUES (?, 18, ?, '[]', '[]', 'intermediate', '[]', 0, 0)
-  `, [req.body.password, req.body.username])
+  try {
+    const { username, password } = req.body;
 
-  req.session.number = result.insertId;
+    if (!username || !password) {
+      return res.status(400).json({ error: "Missing fields" });
+    }
 
-  await new Promise((resolve, reject) => {
-    req.session.save(err => {
-      if (err) reject(err);
-      else resolve();
+    if (typeof username !== "string" || typeof password !== "string") {
+      return res.status(400).json({ error: "Invalid input types" });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const [result] = await pool.query(
+      `INSERT INTO users (password_hash, age, name, transport, gear, fitness, lookingFor, totalDistance, totalAltitude)
+       VALUES (?, 18, ?, '[]', '[]', 'intermediate', '[]', 0, 0)`,
+      [hashedPassword, username]
+    );
+
+    req.session.number = result.insertId;
+
+    req.session.save(() => {
+      res.redirect("/main");
     });
-  });
 
-  res.redirect("/main");
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
 });
 
 app.get("/main", (req, res) => {
   res.sendFile(__dirname + "/public/index.html");
 });
 
-app.get("/session-number", (req, res) => {
-  res.json({ number: req.session.number || 0});
-});
+// app.get("/session-number", (req, res) => {
+//   res.json({ number: req.session.number || 0});
+// });
 
 app.post("/logout", (req, res) => {
   req.session.destroy(() => {
@@ -210,26 +223,22 @@ app.get("/loggedout", (req, res) => {
 });
 
 // API routes
-app.get('/api/data', (req, res) => {
-  res.json(data);
-});
-
-app.get('/api/completedClimbs', async (req, res) => {
+app.get('/api/completedClimbs', requireAuth, async (req, res) => {
   const completedClimbsResult = await getCompletedClimbs(req.session.number);
   res.send(completedClimbsResult);
 });
 
-app.get('/api/mountains', async (req, res) => {
+app.get('/api/mountains', requireAuth, async (req, res) => {
   const mountainsResult = await getMountains();
   res.send(mountainsResult);
 });
 
-app.get('/api/plannedClimbs', async (req, res) => {
+app.get('/api/plannedClimbs', requireAuth, async (req, res) => {
   const plannedClimbsResult = await getPlannedClimbs(req.session.number);
   res.send(plannedClimbsResult);
 });
 
-app.get('/api/profile', async (req, res) => {
+app.get('/api/profile', requireAuth, async (req, res) => {
   try {
     const profileResult = await getProfile(req.session.number);
     res.json(profileResult);
@@ -239,46 +248,120 @@ app.get('/api/profile', async (req, res) => {
   }
 });
 
-app.put('/api/profile', async (req, res) => {
-  console.log(req.body);
-  const {age, transport, gear, fitness, lookingFor, totalDistance, totalAltitude} = req.body;
+app.put('/api/profile', requireAuth, async (req, res) => {
+  try {
+    const { age, transport, gear, fitness, lookingFor, totalDistance, totalAltitude } = req.body;
 
-  const gearJson = Array.isArray(gear) ? JSON.stringify(gear) : gear;
-  const transportJson = Array.isArray(transport) ? JSON.stringify(transport) : transport;
-  const lookingForJson = Array.isArray(lookingFor) ? JSON.stringify(lookingFor) : lookingFor;
+    if (typeof age !== "number" || typeof fitness !== "string") {
+      return res.status(400).json({ error: "Invalid input" });
+    }
 
-  const updatedProfile = await updateProfile(req.session.number, age, transportJson, gearJson, fitness, lookingForJson, totalDistance, totalAltitude);
-  res.json(updatedProfile);
+    const gearJson = Array.isArray(gear) ? JSON.stringify(gear) : gear;
+    const transportJson = Array.isArray(transport) ? JSON.stringify(transport) : transport;
+    const lookingForJson = Array.isArray(lookingFor) ? JSON.stringify(lookingFor) : lookingFor;
+
+    const updatedProfile = await updateProfile(
+      req.session.number,
+      age,
+      transportJson,
+      gearJson,
+      fitness,
+      lookingForJson,
+      totalDistance,
+      totalAltitude
+    );
+
+    res.json(updatedProfile);
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
 });
 
-app.post('/api/completedClimb', async (req, res) => {
-  const {mountain_id, date, duration, weather, companions} = req.body;
+app.post('/api/completedClimb', requireAuth, async (req, res) => {
+  try {
+    const { mountain_id, date, duration, weather, companions } = req.body;
 
-  const createdCompletedClimb = await createCompletedClimb(req.session.number, mountain_id, date, duration, weather, companions);
-  res.status(201).send(createdCompletedClimb);
+    if (!mountain_id || !date) {
+      return res.status(400).json({ error: "Missing fields" });
+    }
+
+    await createCompletedClimb(
+      req.session.number,
+      mountain_id,
+      date,
+      duration,
+      weather,
+      companions
+    );
+
+    res.status(201).json({ success: true });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
 }); 
 
-app.post('/api/plannedClimb', async (req, res) => {
-  const {mountain_id, date} = req.body;
+app.post('/api/plannedClimb', requireAuth, async (req, res) => {
+  try {
+    const { mountain_id, date } = req.body;
 
-  const createdPlannedClimb = await createPlannedClimb(req.session.number, mountain_id, date);
-  res.status(201).send(createdPlannedClimb);
+    if (!mountain_id || !date) {
+      return res.status(400).json({ error: "Missing fields" });
+    }
+
+    await createPlannedClimb(req.session.number, mountain_id, date);
+
+    res.status(201).json({ success: true });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
 });
 
-app.delete('/api/completedClimb', async (req, res) => {
-  const {id} = req.body; 
+app.delete('/api/completedClimb', requireAuth, async (req, res) => {
+  try {
+    const { id } = req.body;
 
-  await pool.query(`DELETE FROM completedclimbs WHERE id = ?`, [id]);
+    if (!id || typeof id !== "number") {
+      return res.status(400).json({ error: "Invalid id" });
+    }
 
-  res.json({ success: true });
+    await pool.query(
+      `DELETE FROM completedclimbs WHERE id = ? AND user_id = ?`,
+      [id, req.session.number]
+    );
+
+    res.json({ success: true });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
 });
 
-app.delete('/api/plannedClimb', async (req, res) => {
-  const {id} = req.body; 
+app.delete('/api/plannedClimb', requireAuth, async (req, res) => {
+  try {
+    const { id } = req.body;
 
-  await pool.query(`DELETE FROM plannedclimbs WHERE id = ?`, [id]);
+    if (!id || typeof id !== "number") {
+      return res.status(400).json({ error: "Invalid id" });
+    }
 
-  res.json({ success: true });
+    await pool.query(
+      `DELETE FROM plannedclimbs WHERE id = ? AND user_id = ?`,
+      [id, req.session.number]
+    );
+
+    res.json({ success: true });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
 });
 
 // For any other route, serve index.html (supports SPA routing)
@@ -287,4 +370,4 @@ app.delete('/api/plannedClimb', async (req, res) => {
 //   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 // });
 
-app.listen(PORT, () => console.log(`✅ Server running at http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
