@@ -3,45 +3,18 @@ const path = require('path');
 const mysql = require('mysql2');
 const dotenv = require('dotenv');
 const session = require('express-session');
+const MySQLStore = require('express-mysql-session')(session);
 const bcrypt = require('bcrypt');
 dotenv.config();
 
 const app = express();
 const PORT = 3000;
 
-app.use(session({
-  secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    httpOnly: true,     // prevents JS access (XSS protection)
-    secure: false,      // set true in HTTPS production
-    sameSite: "lax"     // CSRF protection
-  }
-}));
-
 // Middleware to parse JSON requests
 app.use(express.json({ limit: '10kb' }));
 
 // middleware
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
-
-app.get('/', (req, res) => {
-  res.sendFile((path.join(__dirname, 'public', 'login.html')));
-});
-
-// Serve frontend files from 'public' folder
-app.use(express.static(path.join(__dirname, 'public')));
-
-// app.get('/', (req, res) => {
-//   res.redirect('/index.html');  // ← Server redirect: forces URL to /index.html
-// });
-
-// app.get('/index.html', (req, res) => res.sendFile(__dirname + '/index.html'));
-
-app.get('/index.html', (req, res) => {
-  res.sendFile((path.join(__dirname, 'public', 'index.html')));
-});
 
 // Connect to database
 const pool = mysql.createPool({
@@ -51,8 +24,23 @@ const pool = mysql.createPool({
   database: process.env.MYSQL_DATABASE
 }).promise();
 
+// Create store
+const sessionStore = new MySQLStore({}, pool);
+
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  store: sessionStore,
+  cookie: {
+    httpOnly: true,     // prevents JS access (XSS protection)
+    secure: false,      // set true in HTTPS production
+    sameSite: "lax"     // CSRF protection
+  }
+}));
+
 function requireAuth(req, res, next) {
-  if (!req.session.number) {
+  if (!req.session?.number) {
     return res.status(401).json({ error: "Unauthorized" });
   }
   next();
@@ -127,25 +115,22 @@ async function updateProfile(userId, age, transport, gear, fitness, lookingFor, 
   // return getProfile(userId);
 }
 
+const publicPath = path.join(__dirname, 'public');
+
+// 1. root route serves login page
+app.get('/', (req, res) => {
+  res.sendFile(path.join(publicPath, 'login.html'));
+});
+
+// 2. protected main page
+app.get('/main', requireAuth, (req, res) => {
+  res.sendFile(path.join(publicPath, 'index.html'));
+});
+
+// 3. static files after routes
+app.use(express.static(publicPath));
+
 // LOGIN and REGISTER
-
-async function login(username, password) {
-  const [result] = await pool.query(`
-    SELECT id, password_hash
-    FROM users
-    WHERE name = ?
-  `, [username]);
-
-  if (result.length === 0) return null;
-
-  const user = result[0];
-
-  const match = await bcrypt.compare(password, user.password_hash);
-  if (!match) return null;
-
-  return { id: user.id };
-}
-
 app.post("/login", async (req, res) => {
   try {
     const { username, password } = req.body;
@@ -154,9 +139,19 @@ app.post("/login", async (req, res) => {
       return res.status(400).json({ error: "Missing fields" });
     }
 
-    const user = await login(username, password);
+    const [result] = await pool.query(
+      `SELECT id, password_hash FROM users WHERE name = ?`,
+      [username]
+    );
 
-    if (!user) {
+    if (result.length === 0) {
+      return res.status(401).json({ error: "Invalid credentials" });
+    }
+
+    const user = result[0];
+
+    const match = await bcrypt.compare(password, user.password_hash);
+    if (!match) {
       return res.status(401).json({ error: "Invalid credentials" });
     }
 
@@ -204,14 +199,6 @@ app.post("/register", async (req, res) => {
   }
 });
 
-app.get("/main", (req, res) => {
-  res.sendFile(__dirname + "/public/index.html");
-});
-
-// app.get("/session-number", (req, res) => {
-//   res.json({ number: req.session.number || 0});
-// });
-
 app.post("/logout", (req, res) => {
   req.session.destroy(() => {
     res.redirect("/loggedout");
@@ -219,7 +206,7 @@ app.post("/logout", (req, res) => {
 });
 
 app.get("/loggedout", (req, res) => {
-  res.sendFile(__dirname + "/public/login.html");
+  res.sendFile(path.join(publicPath, 'login.html'));
 });
 
 // API routes
@@ -326,7 +313,7 @@ app.delete('/api/completedClimb', requireAuth, async (req, res) => {
   try {
     const { id } = req.body;
 
-    if (!id || typeof id !== "number") {
+    if (!id || isNaN(Number(id))) {
       return res.status(400).json({ error: "Invalid id" });
     }
 
@@ -347,7 +334,7 @@ app.delete('/api/plannedClimb', requireAuth, async (req, res) => {
   try {
     const { id } = req.body;
 
-    if (!id || typeof id !== "number") {
+    if (!id || isNaN(Number(id))) {
       return res.status(400).json({ error: "Invalid id" });
     }
 
@@ -363,11 +350,5 @@ app.delete('/api/plannedClimb', requireAuth, async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 });
-
-// For any other route, serve index.html (supports SPA routing)
-// // app.get(/.*/, (req, res) => {
-// app.get('/', (req, res) => {
-//   res.sendFile(path.join(__dirname, 'public', 'index.html'));
-// });
 
 app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));

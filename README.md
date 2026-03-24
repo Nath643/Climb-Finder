@@ -1,6 +1,6 @@
 # Climb finder
 
-A full-stack web app for discovering and tracking climbing locations
+A prototype full-stack web app for discovering and tracking mountains
 
 ## Tech Stack
 
@@ -44,3 +44,4 @@ MYSQL_HOST=
 MYSQL_USER=
 MYSQL_PASSWORD=
 MYSQL_DATABASE=
+SESSION_SECRET=
