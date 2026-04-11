@@ -5,6 +5,7 @@ const dotenv = require('dotenv');
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
 const bcrypt = require('bcrypt');
+const fs = require('fs');
 dotenv.config();
 
 const app = express();
@@ -16,13 +17,24 @@ app.use(express.json({ limit: '10kb' }));
 // middleware
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 
+
+console.log("DB HOST:", process.env.MYSQL_HOST);
+
 // Connect to database
 const pool = mysql.createPool({
   host: process.env.MYSQL_HOST,
+  port: Number(process.env.MYSQL_PORT),
   user: process.env.MYSQL_USER,
   password: process.env.MYSQL_PASSWORD,
-  database: process.env.MYSQL_DATABASE
+  database: process.env.MYSQL_DATABASE,
+  ssl: {
+    ca: fs.readFileSync('./certs/ca.pem')
+  }
 }).promise();
+
+pool.query('SELECT 1')
+  .then(() => console.log('Connected to Aiven MySQL!'))
+  .catch(err => console.error('Connection failed:', err));
 
 // Create store
 const sessionStore = new MySQLStore({}, pool);
