@@ -3,16 +3,16 @@ designs/
 
 # Node dependencies
 backend/node_modules/
-frontend/node_modules/
 
 # Build output
 backend/build/
 backend/dist/
-frontend/build/
-frontend/dist/
 
-# Environment
+# Environment files
 backend/.env
+
+# Certificates (sensitive)
+backend/certs/
 
 # Logs
 npm-debug.log*
