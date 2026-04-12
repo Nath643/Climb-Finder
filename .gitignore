@@ -1,17 +1,18 @@
-#design sketches folder
+# Design sketches folder
 designs/
-
-
-backend/node_modules/
-backend/dist/
-backend/.env
 
 # Node dependencies
 backend/node_modules/
+frontend/node_modules/
 
 # Build output
 backend/build/
 backend/dist/
+frontend/build/
+frontend/dist/
+
+# Environment
+backend/.env
 
 # Logs
 npm-debug.log*
