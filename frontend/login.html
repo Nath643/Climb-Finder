@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Climb Finder</title>
+
+    <link rel="stylesheet" href="styles/login.css">
+    <link rel="stylesheet" href="styles/header.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;700;800;900&display=swap" rel="stylesheet">
+  </head>
+
+  <body>
+    <header>
+      <nav>
+        <button class="hamburger-menu-button">
+          
+        </button>
+
+        <div class="pages">
+          
+        </div>
+      </nav>
+
+      <div class="logo">
+        <h1>Climb Finder</h1>
+      </div>
+
+      <div class="country">
+        <button class="country-button">
+          <p>UK</p>
+        </button>
+        <div class="countries">
+
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="page-title">
+        <h2>Login / Registration Page</h2>
+      </section>
+
+      <section class="login-grid">
+        <h3>Already Have an Account? Login here:</h3>
+
+        <form action="/login" method="POST">
+
+          <h4>Username</h4>
+          <input type="text" class="js-username-input" name="username">
+          <h4>Password</h4>
+          <input type="password" class="js-password-input" name="password">
+
+          <button type="submit" class="js-login-button">Login</a>
+        </form>
+      </section>
+
+      <section class="registration-grid">
+         <h3>New? Create an Account Here:</h3>
+        <form action="/register" method="POST">
+        
+          <h4>Username</h4>
+          <input type="text" class="js-username-register-input" name="username">
+          <h4>Password</h4>
+          <input type="password" class="js-password-register-input" name="password">
+
+          <button type="submit" class="js-register-button">Register</a>
+        </form>
+      </section>
+
+    </main>
+
+    <script type="module" src="scripts/login.js"></script>
+  </body>
+</html>

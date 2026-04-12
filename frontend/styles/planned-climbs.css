@@ -1,0 +1,144 @@
+body {
+  padding: 0;
+  margin: 0;
+  font-family: Verdana, arial;
+}
+
+
+.page-title {
+  text-align: center;
+  margin-bottom: 5px;
+  margin-top: 40px;
+}
+
+
+.planned-climbs-grid {
+  background-color: rgb(240, 240, 240);
+  padding: 20px;
+}
+
+.add-completed-mountain-section {
+  display: grid;
+  grid-template-columns: 200px 200px 200px 200px 200px;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: solid 1px rgb(215, 215, 215) 
+}
+
+.plus-container {
+  position: relative;
+  height: 221px;
+}
+
+.plus-icon {
+  position: absolute;
+  top: 77.5px;
+  left: 81.8px;
+  background-color: rgb(67, 211, 67);
+  height: 50px;
+  width: 50px;
+  border-radius: 25px;
+}
+
+.add-new-climb-button-container {
+  position: relative;
+  height: 221px;
+}
+
+.add-new-climb-button {
+  background-color: rgb(24, 101, 0);
+  color: rgb(232, 232, 232);
+  font-size: 16px;
+  border-radius: 8px;
+  padding: 10px;
+  border: none;
+  box-shadow: 1px 1px 4px 1px rgba(0, 0, 0, 0.205);
+  font-weight: bold;
+  cursor: pointer;
+  position: absolute;
+  top: 83.5px;
+  left: 10px;
+}
+
+.add-new-climb-button:hover {
+  top: 84.5px;
+  left: 11px;
+  box-shadow: 0.2px 0.2px 2px 0.5px rgba(0, 0, 0, 0.205);
+}
+
+.select-mountain, .select-date, .buttons-container {
+  display: none;
+}
+
+.climb-button-clicked {
+  display: none;
+}
+
+
+.planned-climb-section {
+  display: grid;
+  grid-template-columns: 165px 1fr 1fr 1fr 1fr;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: solid 1px rgb(215, 215, 215); 
+}
+
+.delete-planned-climb-button-container {
+  position: relative;
+}
+
+.delete-planned-climb-button {
+  position: absolute;
+  top: 77.5px;
+  left: 81.8px;
+  background-color: rgb(255, 47, 47);
+  color: rgb(230, 230, 230);
+  font-weight: bold;
+  font-size: 30px;
+  height: 50px;
+  width: 50px;
+  border-radius: 25px;
+  cursor: pointer;
+  border: none;
+  transition: 0.2s;
+}
+
+.delete-planned-climb-button:hover {
+  background-color: rgba(255, 47, 47, 0.567);
+  color: rgb(105, 105, 105);
+}
+
+.mountain-image-container {
+  margin-left: 50px;
+}
+
+.mountain-image {
+  height: 200px;
+  width: 242.569px;
+  border: solid 1px rgb(113, 113, 113);
+}
+
+.more-info-button-container {
+  position: relative;
+}
+
+.more-info-button {
+  background-color: rgb(24, 101, 0);
+  color: rgb(232, 232, 232);
+  font-size: 16px;
+  border-radius: 8px;
+  padding: 10px;
+  border: none;
+  box-shadow: 1px 1px 4px 1px rgba(0, 0, 0, 0.205);
+  font-weight: bold;
+  position: absolute;
+  cursor: pointer;
+}
+
+.more-info-button:hover {
+  top: 1px;
+  left: 1px;
+  box-shadow: 0.2px 0.2px 2px 0.5px rgba(0, 0, 0, 0.205);
+}
+
+
