@@ -6,10 +6,16 @@ const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
 const bcrypt = require('bcrypt');
 const fs = require('fs');
+const cors = require('cors');
 dotenv.config();
 
 const app = express();
 const PORT = 3000;
+
+app.use(cors({
+  origin: 'http://localhost:5500', // front-end URL
+  credentials: true
+}));
 
 // Middleware to parse JSON requests
 app.use(express.json({ limit: '10kb' }));
@@ -120,20 +126,23 @@ async function updateProfile(userId, age, transport, gear, fitness, lookingFor, 
   `, [age, transport, gear, fitness, lookingFor, totalDistance, totalAltitude, userId]);
 }
 
-const publicPath = path.join(__dirname, 'public');
+app.use('/climb-route-maps', express.static(path.join(__dirname, 'public', 'climb-route-maps')));
+app.use('/mountain-images', express.static(path.join(__dirname, 'public', 'mountain-images')));
 
-// root  serves login page
-app.get('/', (req, res) => {
-  res.sendFile(path.join(publicPath, 'login.html'));
-});
+// const publicPath = path.join(__dirname, 'public');
 
-// protected main page
-app.get('/main', requireAuth, (req, res) => {
-  res.sendFile(path.join(publicPath, 'index.html'));
-});
+// // root  serves login page
+// app.get('/', (req, res) => {
+//   res.sendFile(path.join(publicPath, 'login.html'));
+// });
+
+// // protected main page
+// app.get('/main', requireAuth, (req, res) => {
+//   res.sendFile(path.join(publicPath, 'index.html'));
+// });
 
 // static files after routes
-app.use(express.static(publicPath));
+// app.use(express.static(publicPath));
 
 // LOGIN and REGISTER
 app.post("/login", async (req, res) => {
@@ -163,7 +172,8 @@ app.post("/login", async (req, res) => {
     req.session.number = user.id;
 
     req.session.save(() => {
-      res.redirect("/main");
+      // res.redirect("/main");
+      res.json({ success: true });
     });
 
   } catch (err) {
@@ -195,7 +205,8 @@ app.post("/register", async (req, res) => {
     req.session.number = result.insertId;
 
     req.session.save(() => {
-      res.redirect("/main");
+      // res.redirect("/main");
+      res.json({ success: true });
     });
 
   } catch (err) {
@@ -206,13 +217,14 @@ app.post("/register", async (req, res) => {
 
 app.post("/logout", (req, res) => {
   req.session.destroy(() => {
-    res.redirect("/loggedout");
+    // res.redirect("/loggedout");
+    res.json({ success: true });
   });
 });
 
-app.get("/loggedout", (req, res) => {
-  res.sendFile(path.join(publicPath, 'login.html'));
-});
+// app.get("/loggedout", (req, res) => {
+//   res.sendFile(path.join(publicPath, 'login.html'));
+// });
 
 // API routes
 app.get('/api/completedClimbs', requireAuth, async (req, res) => {

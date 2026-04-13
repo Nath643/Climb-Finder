@@ -47,7 +47,9 @@
       <section class="login-grid">
         <h3>Already Have an Account? Login here:</h3>
 
-        <form action="/login" method="POST">
+        <form action="http://localhost:3000/login" method="POST"> 
+          <!-- ok, this works ^ and returns, success = true, 
+           now, I need to do the frontend redirect once that is validated  -->
 
           <h4>Username</h4>
           <input type="text" class="js-username-input" name="username">
