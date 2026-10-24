@@ -13,7 +13,7 @@ const app = express();
 const PORT = 3000;
 
 app.use(cors({
-  origin: 'http://localhost:5500', // front-end URL
+  origin: ["http://localhost:5500", "http://127.0.0.1:5500"], 
   credentials: true
 }));
 
@@ -52,8 +52,8 @@ app.use(session({
   store: sessionStore,
   cookie: {
     httpOnly: true,     // prevents JS access (XSS protection)
-    secure: false,      // set true in HTTPS production
-    sameSite: "lax"     // CSRF protection
+    secure: false,      
+    sameSite: "lax"     
   }
 }));
 
@@ -233,6 +233,7 @@ app.get('/api/completedClimbs', requireAuth, async (req, res) => {
 });
 
 app.get('/api/mountains', requireAuth, async (req, res) => {
+  console.log(req.session.number);
   const mountainsResult = await getMountains();
   res.send(mountainsResult);
 });
